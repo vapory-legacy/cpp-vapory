@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file transactionqueue.cpp
  * @author Christoph Jentzsch <cj@ethdev.com>
@@ -20,20 +20,20 @@
  * TransactionQueue test functions.
  */
 
-#include <libethereum/TransactionQueue.h>
-#include <test/tools/libtesteth/TestHelper.h>
-#include <test/tools/libtesteth/BlockChainHelper.h>
+#include <libvapory/TransactionQueue.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <test/tools/libtestvap/BlockChainHelper.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 
 BOOST_FIXTURE_TEST_SUITE(TransactionQueueSuite, TestOutputHelper)
 
 BOOST_AUTO_TEST_CASE(TransactionEIP86)
 {
-	dev::eth::TransactionQueue txq;
+	dev::vap::TransactionQueue txq;
 	Address to = Address("0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b");
 	RLPStream streamRLP;
 	streamRLP.appendList(9);
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(TransactionEIP86)
 
 BOOST_AUTO_TEST_CASE(tqMaxNonce)
 {
-	dev::eth::TransactionQueue txq;
+	dev::vap::TransactionQueue txq;
 
 	// from a94f5374fce5edbc8e2a8697c15331677e6ebf0b
 	const u256 gasCost =  10 * szabo;
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(tqMaxNonce)
 
 BOOST_AUTO_TEST_CASE(tqPriority)
 {
-	dev::eth::TransactionQueue txq;
+	dev::vap::TransactionQueue txq;
 
 	const u256 gasCostCheap =  10 * szabo;
 	const u256 gasCostMed =  20 * szabo;
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(tqPriority)
 
 BOOST_AUTO_TEST_CASE(tqFuture)
 {
-	dev::eth::TransactionQueue txq;
+	dev::vap::TransactionQueue txq;
 
 	// from a94f5374fce5edbc8e2a8697c15331677e6ebf0b
 	const u256 gasCostMed =  20 * szabo;
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(tqFuture)
 
 BOOST_AUTO_TEST_CASE(tqLimits)
 {
-	dev::eth::TransactionQueue txq(3, 3);
+	dev::vap::TransactionQueue txq(3, 3);
 	const u256 gasCostMed =  20 * szabo;
 	const u256 gas = 25000;
 	Address dest = Address("0x095e7baea6a6c7c4c2dfeb977efac326af552d87");
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(tqLimits)
 
 BOOST_AUTO_TEST_CASE(tqOutput)
 {
-	BOOST_REQUIRE(string(TransactionQueueChannel().name()) == string(EthCyan "┉┅▶"));
+	BOOST_REQUIRE(string(TransactionQueueChannel().name()) == string(VapCyan "┉┅▶"));
 }
 
 

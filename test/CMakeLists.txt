@@ -27,7 +27,7 @@ foreach(file ${sources})
 				if (NOT ";${allSuites};" MATCHES ";${TestSuite};")
 					string(SUBSTRING ${TestSuitePath} 1 -1 TestSuitePathFixed)
 					list(APPEND allSuites ${TestSuite})
-					add_test(NAME ${TestSuitePathFixed} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testeth -t ${TestSuitePathFixed})
+					add_test(NAME ${TestSuitePathFixed} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testvap -t ${TestSuitePathFixed})
 				endif()
 			endif()
 		elseif(test MATCHES "^CASE .*")
@@ -35,7 +35,7 @@ foreach(file ${sources})
 				if(NOT test MATCHES "^CASE &createRandom.*")
 					string(SUBSTRING ${test} 5 -1 TestCase)
 					string(SUBSTRING ${TestSuitePath} 1 -1 TestSuitePathFixed)
-					add_test(NAME ${TestSuitePathFixed}/${TestCase} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testeth -t ${TestSuitePathFixed}/${TestCase})
+					add_test(NAME ${TestSuitePathFixed}/${TestCase} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testvap -t ${TestSuitePathFixed}/${TestCase})
 				endif()
 			endif()
 		elseif (";${test_raw};" MATCHES "BOOST_AUTO_TEST_SUITE_END()")
@@ -46,26 +46,26 @@ foreach(file ${sources})
 	endforeach(test_raw)
 endforeach(file)
 
-add_executable(testeth ${sources})
-target_include_directories(testeth PRIVATE ../utils)
-target_link_libraries(testeth PRIVATE ethereum ethashseal web3jsonrpc devcrypto devcore cryptopp-static)
+add_executable(testvap ${sources})
+target_include_directories(testvap PRIVATE ../utils)
+target_link_libraries(testvap PRIVATE vapory vapashseal web3jsonrpc devcrypto devcore cryptopp-static)
 
 enable_testing()
 set(CTEST_OUTPUT_ON_FAILURE TRUE)
 
-include(EthUtils)
+include(VapUtils)
 
-eth_add_test(ClientBase
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=1
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=3
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=10
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=1
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=3
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=10
+vap_add_test(ClientBase
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=1
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=3
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=10
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=1
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=3
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=10
 )
 
 #Does not work
-#eth_add_test(JsonRpc
-#	ARGS --eth_testfile=BlockTests/bcJS_API_Test
-#	ARGS --eth_testfile=BlockTests/bcValidBlockTest
+#vap_add_test(JsonRpc
+#	ARGS --vap_testfile=BlockTests/bcJS_API_Test
+#	ARGS --vap_testfile=BlockTests/bcValidBlockTest
 #)

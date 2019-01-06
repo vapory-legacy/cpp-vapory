@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
  
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
  
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
  
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
  */
 /** @file Common.cpp
  * @author Marek Kotewicz <marek@ethdev.com>
@@ -23,7 +23,7 @@
 #include <libdevcore/CommonData.h>
 #include <libdevcore/CommonIO.h>
 #include <libdevcore/FileSystem.h>
-#include <test/tools/libtesteth/Options.h>
+#include <test/tools/libtestvap/Options.h>
 #include "Common.h"
 #include <boost/filesystem.hpp>
 
@@ -40,11 +40,11 @@ boost::filesystem::path dev::test::getTestPath()
 		return Options::get().testpath;
 
 	string testPath;
-	const char* ptestPath = getenv("ETHEREUM_TEST_PATH");
+	const char* ptestPath = getenv("VAPORY_TEST_PATH");
 
 	if (ptestPath == nullptr)
 	{
-		ctest << " could not find environment variable ETHEREUM_TEST_PATH \n";
+		ctest << " could not find environment variable VAPORY_TEST_PATH \n";
 		testPath = "../../test/jsontests";
 	}
 	else
@@ -66,7 +66,7 @@ Json::Value dev::test::loadJsonFromFile(fs::path const& _path)
 	Json::Value result;
 	string s = dev::contentsString(_path);
 	if (!s.length())
-		ctest << "Contents of " << _path.string() << " is empty. Have you cloned the 'tests' repo branch develop and set ETHEREUM_TEST_PATH to its path?";
+		ctest << "Contents of " << _path.string() << " is empty. Have you cloned the 'tests' repo branch develop and set VAPORY_TEST_PATH to its path?";
 	else
 		ctest << "FIXTURE: loaded test from file: " << _path.string();
 
@@ -83,6 +83,6 @@ fs::path dev::test::getRandomPath()
 {
 	std::stringstream stream;
 	stream << randomNumber();
-	return getDataDir("EthereumTests") / fs::path(stream.str());
+	return getDataDir("VaporyTests") / fs::path(stream.str());
 }
 

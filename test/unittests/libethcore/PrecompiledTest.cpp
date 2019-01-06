@@ -1,30 +1,30 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file PrecompiledTest.cpp
  * Preompiled contract implemetations testing.
  */
 
 #include <boost/test/unit_test.hpp>
-#include <test/tools/libtesteth/TestHelper.h>
-#include <libethcore/Precompiled.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <libvapcore/Precompiled.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 namespace ut = boost::unit_test;
 
@@ -341,8 +341,8 @@ BOOST_AUTO_TEST_CASE(modexpCostHighRange)
 /// @defgroup PrecompiledTests Test cases for precompiled contracts.
 ///
 /// These test cases are used for testing and benchmarking precompiled contracts.
-/// They are ported from go-ethereum, so formatting is not perfect.
-/// https://github.com/ethereum/go-ethereum/blob/master/core/vm/contracts_test.go.
+/// They are ported from go-vapory, so formatting is not perfect.
+/// https://github.com/vaporyco/go-vapory/blob/master/core/vm/contracts_test.go.
 /// @{
 
 struct PrecompiledTest

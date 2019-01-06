@@ -1,12 +1,12 @@
 #include <jsonrpccpp/common/exception.h>
 #include <libdevcore/Log.h>
-#include <libethereum/Client.h>
+#include <libvapory/Client.h>
 #include "SessionManager.h"
 #include "AdminUtils.h"
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::rpc;
 
 AdminUtils::AdminUtils(SessionManager& _sm, SystemManager* _systemManager):

@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file fuzzHelper.cpp
  * @author Dimitry Khokhlov <winsvega@mail.ru>
@@ -21,60 +21,60 @@
 
 #include <chrono>
 #include <boost/filesystem/path.hpp>
-#include <libevm/Instruction.h>
+#include <libvvm/Instruction.h>
 #include <test/tools/fuzzTesting/fuzzHelper.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
 #include <test/tools/jsontests/StateTests.h>
 
 using namespace dev;
-const static std::array<eth::Instruction, 47> invalidOpcodes {{
-	eth::Instruction::INVALID,
-	eth::Instruction::PUSHC,
-	eth::Instruction::JUMPC,
-	eth::Instruction::JUMPCI,
-	eth::Instruction::JUMPTO,
-	eth::Instruction::JUMPIF,
-	eth::Instruction::JUMPSUB,
-	eth::Instruction::JUMPV,
-	eth::Instruction::JUMPSUBV,
-	eth::Instruction::BEGINSUB,
-	eth::Instruction::BEGINDATA,
-	eth::Instruction::RETURNSUB,
-	eth::Instruction::PUTLOCAL,
-	eth::Instruction::GETLOCAL,
-	eth::Instruction::XADD,
-	eth::Instruction::XMUL,
-	eth::Instruction::XSUB,
-	eth::Instruction::XDIV,
-	eth::Instruction::XSDIV,
-	eth::Instruction::XMOD,
-	eth::Instruction::XSMOD,
-	eth::Instruction::XLT,
-	eth::Instruction::XGT,
-	eth::Instruction::XSLT,
-	eth::Instruction::XSGT,
-	eth::Instruction::XEQ,
-	eth::Instruction::XISZERO,
-	eth::Instruction::XAND,
-	eth::Instruction::XOR,
-	eth::Instruction::XXOR,
-	eth::Instruction::XNOT,
-	eth::Instruction::XSHL,
-	eth::Instruction::XSHR,
-	eth::Instruction::XSAR,
-	eth::Instruction::XROL,
-	eth::Instruction::XROR,
-	eth::Instruction::XPUSH,
-	eth::Instruction::XMLOAD,
-	eth::Instruction::XMSTORE,
-	eth::Instruction::XSLOAD,
-	eth::Instruction::XSSTORE,
-	eth::Instruction::XVTOWIDE,
-	eth::Instruction::XWIDETOV,
-	eth::Instruction::XPUT,
-	eth::Instruction::XGET,
-	eth::Instruction::XSWIZZLE,
-	eth::Instruction::XSHUFFLE
+const static std::array<vap::Instruction, 47> invalidOpcodes {{
+	vap::Instruction::INVALID,
+	vap::Instruction::PUSHC,
+	vap::Instruction::JUMPC,
+	vap::Instruction::JUMPCI,
+	vap::Instruction::JUMPTO,
+	vap::Instruction::JUMPIF,
+	vap::Instruction::JUMPSUB,
+	vap::Instruction::JUMPV,
+	vap::Instruction::JUMPSUBV,
+	vap::Instruction::BEGINSUB,
+	vap::Instruction::BEGINDATA,
+	vap::Instruction::RETURNSUB,
+	vap::Instruction::PUTLOCAL,
+	vap::Instruction::GETLOCAL,
+	vap::Instruction::XADD,
+	vap::Instruction::XMUL,
+	vap::Instruction::XSUB,
+	vap::Instruction::XDIV,
+	vap::Instruction::XSDIV,
+	vap::Instruction::XMOD,
+	vap::Instruction::XSMOD,
+	vap::Instruction::XLT,
+	vap::Instruction::XGT,
+	vap::Instruction::XSLT,
+	vap::Instruction::XSGT,
+	vap::Instruction::XEQ,
+	vap::Instruction::XISZERO,
+	vap::Instruction::XAND,
+	vap::Instruction::XOR,
+	vap::Instruction::XXOR,
+	vap::Instruction::XNOT,
+	vap::Instruction::XSHL,
+	vap::Instruction::XSHR,
+	vap::Instruction::XSAR,
+	vap::Instruction::XROL,
+	vap::Instruction::XROR,
+	vap::Instruction::XPUSH,
+	vap::Instruction::XMLOAD,
+	vap::Instruction::XMSTORE,
+	vap::Instruction::XSLOAD,
+	vap::Instruction::XSSTORE,
+	vap::Instruction::XVTOWIDE,
+	vap::Instruction::XWIDETOV,
+	vap::Instruction::XPUT,
+	vap::Instruction::XGET,
+	vap::Instruction::XSWIZZLE,
+	vap::Instruction::XSHUFFLE
 }};
 
 namespace dev
@@ -270,8 +270,8 @@ std::string RandomCode::generate(int _maxOpNumber, RandomCodeOptions const& _opt
 	for (auto i = 0; i < size; i++)
 	{
 		uint8_t opcode = _options.getWeightedRandomOpcode();
-		eth::Instruction inst = (eth::Instruction) opcode;
-		eth::InstructionInfo info = eth::instructionInfo(inst);
+		vap::Instruction inst = (vap::Instruction) opcode;
+		vap::InstructionInfo info = vap::instructionInfo(inst);
 
 		if (info.name.find("INVALID_INSTRUCTION") != std::string::npos || info.name.empty()
 			|| std::find(invalidOpcodes.begin(), invalidOpcodes.end(), inst) != invalidOpcodes.end())
@@ -340,9 +340,9 @@ std::string RandomCode::getPushCode(int _value)
 	return getPushCode(hexString);
 }
 
-std::string RandomCode::fillArguments(eth::Instruction _opcode, RandomCodeOptions const& _options)
+std::string RandomCode::fillArguments(vap::Instruction _opcode, RandomCodeOptions const& _options)
 {
-	eth::InstructionInfo info = eth::instructionInfo(_opcode);
+	vap::InstructionInfo info = vap::instructionInfo(_opcode);
 
 	std::string code;
 	int rand = randomPercent();
@@ -350,23 +350,23 @@ std::string RandomCode::fillArguments(eth::Instruction _opcode, RandomCodeOption
 	if (rand < _options.smartCodeProbability)  // Smart.
 	{
 		//PUSH1 ... PUSH32
-		if (eth::Instruction::PUSH1 <= _opcode && _opcode <= eth::Instruction::PUSH32)
+		if (vap::Instruction::PUSH1 <= _opcode && _opcode <= vap::Instruction::PUSH32)
 		{
-			code += rndByteSequence(int(_opcode) - int(eth::Instruction::PUSH1) + 1);
+			code += rndByteSequence(int(_opcode) - int(vap::Instruction::PUSH1) + 1);
 			return code;
 		}
 
 		//SWAP1 ... SWAP16 || DUP1 ... DUP16
-		bool isSWAP = (eth::Instruction::SWAP1 <= _opcode && _opcode <= eth::Instruction::SWAP16);
-		bool isDUP = (eth::Instruction::DUP1 <= _opcode && _opcode <= eth::Instruction::DUP16);
+		bool isSWAP = (vap::Instruction::SWAP1 <= _opcode && _opcode <= vap::Instruction::SWAP16);
+		bool isDUP = (vap::Instruction::DUP1 <= _opcode && _opcode <= vap::Instruction::DUP16);
 
 		if (isSWAP || isDUP)
 		{
 			int times = 0;
 			if (isSWAP)
-				times = int(_opcode) - int(eth::Instruction::SWAP1) + 2;
+				times = int(_opcode) - int(vap::Instruction::SWAP1) + 2;
 			else
-				times = int(_opcode) - int(eth::Instruction::DUP1) + 1;
+				times = int(_opcode) - int(vap::Instruction::DUP1) + 1;
 
 			for (int i = 0; i < times; i ++)
 				code += getPushCode(rndByteSequence(randOpLengGen()));
@@ -376,27 +376,27 @@ std::string RandomCode::fillArguments(eth::Instruction _opcode, RandomCodeOption
 
 		switch (_opcode)
 		{
-		case eth::Instruction::MSTORE:
+		case vap::Instruction::MSTORE:
 			code += getPushCode(rndByteSequence(randOpLengGen()));	//code
 			code += getPushCode(randOpMemrGen());					//index
 			return code;
-		case eth::Instruction::EXTCODECOPY:
+		case vap::Instruction::EXTCODECOPY:
 			code += getPushCode(randOpMemrGen());	//memstart2
 			code += getPushCode(randOpMemrGen());	//memlen1
 			code += getPushCode(randOpMemrGen());	//memstart1
 			code += getPushCode(toString(_options.getRandomAddress()));//address
 			return code;
-		case eth::Instruction::EXTCODESIZE:
+		case vap::Instruction::EXTCODESIZE:
 			code += getPushCode(toString(_options.getRandomAddress()));//address
 			return code;
-		case eth::Instruction::CREATE:
+		case vap::Instruction::CREATE:
 			//(CREATE value mem1 mem2)
 			code += getPushCode(randOpMemrGen());	//memlen1
 			code += getPushCode(randOpMemrGen());	//memlen1
 			code += getPushCode(randUniIntGen());	//value
 			return code;
-		case eth::Instruction::CALL:
-		case eth::Instruction::CALLCODE:
+		case vap::Instruction::CALL:
+		case vap::Instruction::CALLCODE:
 			//(CALL gaslimit address value memstart1 memlen1 memstart2 memlen2)
 			//(CALLCODE gaslimit address value memstart1 memlen1 memstart2 memlen2)
 			code += getPushCode(randOpMemrGen());	//memlen2
@@ -407,8 +407,8 @@ std::string RandomCode::fillArguments(eth::Instruction _opcode, RandomCodeOption
 			code += getPushCode(toString(_options.getRandomAddress()));//address
 			code += getPushCode(randUniIntGen());	//gaslimit
 			return code;
-		case eth::Instruction::STATICCALL:
-		case eth::Instruction::DELEGATECALL:
+		case vap::Instruction::STATICCALL:
+		case vap::Instruction::DELEGATECALL:
 			//(CALL gaslimit address value memstart1 memlen1 memstart2 memlen2)
 			//(CALLCODE gaslimit address value memstart1 memlen1 memstart2 memlen2)
 			code += getPushCode(randOpMemrGen());	//memlen2
@@ -418,11 +418,11 @@ std::string RandomCode::fillArguments(eth::Instruction _opcode, RandomCodeOption
 			code += getPushCode(toString(_options.getRandomAddress()));//address
 			code += getPushCode(randUniIntGen());	//gaslimit
 			return code;
-		case eth::Instruction::SUICIDE: //(SUICIDE address)
+		case vap::Instruction::SUICIDE: //(SUICIDE address)
 			code += getPushCode(toString(_options.getRandomAddress()));
 			return code;
-		case eth::Instruction::RETURN:  //(RETURN memlen1 memlen2)
-		case eth::Instruction::REVERT:  //(REVERT memlen1 memlen2)
+		case vap::Instruction::RETURN:  //(RETURN memlen1 memlen2)
+		case vap::Instruction::REVERT:  //(REVERT memlen1 memlen2)
 			code += getPushCode(randOpMemrGen());	//memlen1
 			code += getPushCode(randOpMemrGen());	//memlen1
 			return code;
@@ -453,28 +453,28 @@ RandomCodeOptions::RandomCodeOptions() :
 		mapWeights.insert(std::pair<int, int>(i, 40));
 
 	//Probability of instructions
-	setWeight(eth::Instruction::STOP, 1);
-	for (int i = (int)(eth::Instruction::PUSH1); i < 32; i++)
-		setWeight((eth::Instruction) i, 1);
-	for (int i = (int)(eth::Instruction::SWAP1); i < 16; i++)
-		setWeight((eth::Instruction) i, 10);
-	for (int i = (int)(eth::Instruction::DUP1); i < 16; i++)
-		setWeight((eth::Instruction) i, 10);
+	setWeight(vap::Instruction::STOP, 1);
+	for (int i = (int)(vap::Instruction::PUSH1); i < 32; i++)
+		setWeight((vap::Instruction) i, 1);
+	for (int i = (int)(vap::Instruction::SWAP1); i < 16; i++)
+		setWeight((vap::Instruction) i, 10);
+	for (int i = (int)(vap::Instruction::DUP1); i < 16; i++)
+		setWeight((vap::Instruction) i, 10);
 
-	setWeight(eth::Instruction::SIGNEXTEND, 100);
-	setWeight(eth::Instruction::ORIGIN, 200);
-	setWeight(eth::Instruction::ADDRESS, 200);
-	setWeight(eth::Instruction::SLOAD, 200);
-	setWeight(eth::Instruction::MLOAD, 200);
-	setWeight(eth::Instruction::MSTORE, 400);
-	setWeight(eth::Instruction::MSTORE8, 400);
-	setWeight(eth::Instruction::SSTORE, 170);
-	setWeight(eth::Instruction::CALL, 170);
-	setWeight(eth::Instruction::CALLCODE, 170);
-	setWeight(eth::Instruction::DELEGATECALL, 170);
-	setWeight(eth::Instruction::STATICCALL, 170);
-	setWeight(eth::Instruction::EXTCODECOPY, 170);
-	setWeight(eth::Instruction::EXTCODESIZE, 170);
+	setWeight(vap::Instruction::SIGNEXTEND, 100);
+	setWeight(vap::Instruction::ORIGIN, 200);
+	setWeight(vap::Instruction::ADDRESS, 200);
+	setWeight(vap::Instruction::SLOAD, 200);
+	setWeight(vap::Instruction::MLOAD, 200);
+	setWeight(vap::Instruction::MSTORE, 400);
+	setWeight(vap::Instruction::MSTORE8, 400);
+	setWeight(vap::Instruction::SSTORE, 170);
+	setWeight(vap::Instruction::CALL, 170);
+	setWeight(vap::Instruction::CALLCODE, 170);
+	setWeight(vap::Instruction::DELEGATECALL, 170);
+	setWeight(vap::Instruction::STATICCALL, 170);
+	setWeight(vap::Instruction::EXTCODECOPY, 170);
+	setWeight(vap::Instruction::EXTCODESIZE, 170);
 
 	//some smart addresses for calls
 	addAddress(Address("0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"), AddressType::StateAccount);
@@ -493,7 +493,7 @@ RandomCodeOptions::RandomCodeOptions() :
 	addAddress(Address("0x0000000000000000000000000000000000000008"), AddressType::Precompiled);
 }
 
-void RandomCodeOptions::setWeight(eth::Instruction _opCode, int _weight)
+void RandomCodeOptions::setWeight(vap::Instruction _opCode, int _weight)
 {
 	mapWeights.at((int)_opCode) = _weight;
 }

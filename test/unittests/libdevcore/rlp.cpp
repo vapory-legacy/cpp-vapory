@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file rlp.cpp
  * @author Gav Wood <i@gavwood.com>
@@ -25,8 +25,8 @@
 #include <libdevcore/Common.h>
 #include <libdevcore/CommonIO.h>
 #include <json_spirit/JsonSpiritHeaders.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/test/unit_test.hpp>
@@ -219,7 +219,7 @@ void runRlpTest(string _name, fs::path const& _path)
 		cnote << "TEST " << _name << ":";
 		json_spirit::mValue v;
 		string const s = asString(dev::contents(testPath / fs::path(_name + ".json")));
-		BOOST_REQUIRE_MESSAGE(s.length() > 0, "Contents of " << (testPath / fs::path(_name + ".json")).string() << " is empty. Have you cloned the 'tests' repo branch develop and set ETHEREUM_TEST_PATH to its path?");
+		BOOST_REQUIRE_MESSAGE(s.length() > 0, "Contents of " << (testPath / fs::path(_name + ".json")).string() << " is empty. Have you cloned the 'tests' repo branch develop and set VAPORY_TEST_PATH to its path?");
 		json_spirit::read_string(s, v);
 		//Listener::notifySuiteStarted(_name);
 		dev::test::doRlpTests(v);
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(rlpRandom)
 			cnote << "Testing ..." << path.filename();
 			json_spirit::mValue v;
 			string s = asString(dev::contents(path.string()));
-			BOOST_REQUIRE_MESSAGE(s.length() > 0, "Content of " + path.string() + " is empty. Have you cloned the 'tests' repo branch develop and set ETHEREUM_TEST_PATH to its path?");
+			BOOST_REQUIRE_MESSAGE(s.length() > 0, "Content of " + path.string() + " is empty. Have you cloned the 'tests' repo branch develop and set VAPORY_TEST_PATH to its path?");
 			json_spirit::read_string(s, v);
 			//test::Listener::notifySuiteStarted(path.filename().string());
 			dev::test::doRlpTests(v);

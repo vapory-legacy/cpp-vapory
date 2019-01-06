@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file fullblockchain.cpp
  * @author Dimitry Khokhlov <dimitry@ethdev.com>
@@ -20,16 +20,16 @@
  * Blockchain test functions.
  */
 
-#include <libethereum/Block.h>
-#include <libethereum/BlockChain.h>
-#include <test/tools/libtesteth/TestHelper.h>
-#include <test/tools/libtesteth/BlockChainHelper.h>
-#include <libethereum/GenesisInfo.h>
-#include <libethereum/ChainParams.h>
+#include <libvapory/Block.h>
+#include <libvapory/BlockChain.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <test/tools/libtestvap/BlockChainHelper.h>
+#include <libvapory/GenesisInfo.h>
+#include <libvapory/ChainParams.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 namespace utf = boost::unit_test;
 
@@ -37,10 +37,10 @@ BOOST_FIXTURE_TEST_SUITE(BlockChainFrontierSuite, FrontierNoProofTestFixture)
 
 BOOST_AUTO_TEST_CASE(output)
 {
-	BOOST_WARN(string(BlockChainDebug::name()) == string(EthBlue "☍" EthWhite " ◇"));
-	BOOST_WARN(string(BlockChainWarn::name()) == string(EthBlue "☍" EthOnRed EthBlackBold " ✘"));
-	BOOST_WARN(string(BlockChainNote::name()) == string(EthBlue "☍" EthBlue " ℹ"));
-	BOOST_WARN(string(BlockChainChat::name()) == string(EthBlue "☍" EthWhite " ◌"));
+	BOOST_WARN(string(BlockChainDebug::name()) == string(VapBlue "☍" VapWhite " ◇"));
+	BOOST_WARN(string(BlockChainWarn::name()) == string(VapBlue "☍" VapOnRed VapBlackBold " ✘"));
+	BOOST_WARN(string(BlockChainNote::name()) == string(VapBlue "☍" VapBlue " ℹ"));
+	BOOST_WARN(string(BlockChainChat::name()) == string(VapBlue "☍" VapWhite " ◌"));
 
 	TestBlock genesis = TestBlockChain::defaultGenesisBlock();
 	TestBlockChain bc(genesis);
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(opendb)
 {
 	TestBlock genesis = TestBlockChain::defaultGenesisBlock();
 	TransientDirectory tempDirBlockchain;
-	ChainParams p(genesisInfo(eth::Network::TransitionnetTest), genesis.bytes(), genesis.accountMap());
+	ChainParams p(genesisInfo(vap::Network::TransitionnetTest), genesis.bytes(), genesis.accountMap());
 	BlockChain bc(p, tempDirBlockchain.path(), WithExisting::Kill);
 	auto is_critical = []( std::exception const& _e) { return string(_e.what()).find("DatabaseAlreadyOpen") != string::npos; };
 	BOOST_CHECK_EXCEPTION(BlockChain bc2(p, tempDirBlockchain.path(), WithExisting::Verify), DatabaseAlreadyOpen, is_critical);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(Mining_2_mineUncles)
 Often broken test disabled 5th September 2016, until we have time to
 troubleshoot the root cause.
 
-See https://github.com/ethereum/cpp-ethereum/issues/3256.
+See https://github.com/vaporyco/cpp-vapory/issues/3256.
 
 (Mining_3_mineBlockWithUncles)
 {
@@ -143,7 +143,7 @@ See https://github.com/ethereum/cpp-ethereum/issues/3256.
 Often broken test disabled 5th September 2016, until we have time to
 troubleshoot the root cause.
 
-See https://github.com/ethereum/cpp-ethereum/issues/3059.
+See https://github.com/vaporyco/cpp-vapory/issues/3059.
 
 (Mining_4_BlockQueueSyncing)
 {

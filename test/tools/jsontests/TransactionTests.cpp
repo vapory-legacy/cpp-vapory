@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file transactionTests.cpp
  * @author Dmitrii Khokhlov <winsvega@mail.ru>
@@ -20,20 +20,20 @@
  * Transaction test functions.
  */
 
-#include <libethcore/SealEngine.h>
-#include <libethashseal/GenesisInfo.h>
-#include <libethereum/ChainParams.h>
+#include <libvapcore/SealEngine.h>
+#include <libvapashseal/GenesisInfo.h>
+#include <libvapory/ChainParams.h>
 #include <test/tools/libtestutils/Common.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 #include <test/tools/fuzzTesting/fuzzHelper.h>
-#include <test/tools/libtesteth/TestSuite.h>
+#include <test/tools/libtestvap/TestSuite.h>
 #include <boost/filesystem/path.hpp>
 #include <string>
 
 using namespace std;
 using namespace json_spirit;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 namespace fs = boost::filesystem;
 
 namespace dev {  namespace test {
@@ -43,7 +43,7 @@ class TransactionTestSuite: public TestSuite
 	json_spirit::mValue doTests(json_spirit::mValue const& _input, bool _fillin) const override
 	{
 		json_spirit::mValue v = _input; // TODO: avoid copying and only add valid fields into the new object.
-		unique_ptr<SealEngineFace> se(ChainParams(genesisInfo(eth::Network::MainNetworkTest)).createSealEngine());
+		unique_ptr<SealEngineFace> se(ChainParams(genesisInfo(vap::Network::MainNetworkTest)).createSealEngine());
 		for (auto& i: v.get_obj())
 		{
 			string testname = i.first;

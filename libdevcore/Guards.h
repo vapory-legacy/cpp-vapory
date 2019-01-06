@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Guards.h
  * @author Gav Wood <i@gavwood.com>
@@ -103,9 +103,9 @@ private:
  * Mutex m;
  * unsigned d;
  * ...
- * ETH_(m) d = 1;
+ * VAP_(m) d = 1;
  * ...
- * ETH_(m) { for (auto d = 10; d > 0; --d) foo(d); d = 0; }
+ * VAP_(m) { for (auto d = 10; d > 0; --d) foo(d); d = 0; }
  * @endcode
  *
  * There are several variants of this basic mechanism for different Mutex types and Guards.
@@ -117,11 +117,11 @@ private:
  * Mutex m;
  * int d;
  * ...
- * ETH_GUARDED(m)
+ * VAP_GUARDED(m)
  * {
  *   for (auto d = 50; d > 25; --d)
  *     foo(d);
- *   ETH_UNGUARDED(m)
+ *   VAP_UNGUARDED(m)
  *     bar();
  *   for (; d > 0; --d)
  *     foo(d);
@@ -130,18 +130,18 @@ private:
  */
 
 #define DEV_GUARDED(MUTEX) \
-	for (GenericGuardBool<Guard, Mutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericGuardBool<Guard, Mutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_READ_GUARDED(MUTEX) \
-	for (GenericGuardBool<ReadGuard, SharedMutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericGuardBool<ReadGuard, SharedMutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_WRITE_GUARDED(MUTEX) \
-	for (GenericGuardBool<WriteGuard, SharedMutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericGuardBool<WriteGuard, SharedMutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_RECURSIVE_GUARDED(MUTEX) \
-	for (GenericGuardBool<RecursiveGuard, RecursiveMutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericGuardBool<RecursiveGuard, RecursiveMutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_UNGUARDED(MUTEX) \
-	for (GenericUnguardBool<Mutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericUnguardBool<Mutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_READ_UNGUARDED(MUTEX) \
-	for (GenericUnguardSharedBool<SharedMutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericUnguardSharedBool<SharedMutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 #define DEV_WRITE_UNGUARDED(MUTEX) \
-	for (GenericUnguardBool<SharedMutex> __eth_l(MUTEX); __eth_l.b; __eth_l.b = false)
+	for (GenericUnguardBool<SharedMutex> __vap_l(MUTEX); __vap_l.b; __vap_l.b = false)
 
 }

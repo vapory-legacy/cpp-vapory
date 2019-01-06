@@ -1,9 +1,9 @@
 FROM debian:stretch
 
-LABEL maintainer="C++ Ethereum team"
-LABEL repo="https://github.com/ethereum/cpp-ethereum"
+LABEL maintainer="C++ Vapory team"
+LABEL repo="https://github.com/vaporyco/cpp-vapory"
 LABEL version="3"
-LABEL description="Build environment for C++ Ethereum projects"
+LABEL description="Build environment for C++ Vapory projects"
 
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get -qq update && apt-get install -yq --no-install-recommends \

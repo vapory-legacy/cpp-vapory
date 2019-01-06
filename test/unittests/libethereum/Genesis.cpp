@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file genesis.cpp
  * @author Gav Wood <i@gavwood.com>
@@ -25,15 +25,15 @@
 
 #include <json_spirit/JsonSpiritHeaders.h>
 #include <libdevcore/CommonIO.h>
-#include <libethereum/BlockChain.h>
-#include <libethashseal/GenesisInfo.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <libvapory/BlockChain.h>
+#include <libvapashseal/GenesisInfo.h>
+#include <test/tools/libtestvap/TestHelper.h>
 #include <boost/filesystem/path.hpp>
 #include <boost/test/unit_test.hpp>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 
 namespace fs = boost::filesystem;
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(genesis_tests)
 
 	js::mObject o = v.get_obj();
 
-	ChainParams p(genesisInfo(eth::Network::MainNetwork), genesisStateRoot(eth::Network::MainNetwork));
+	ChainParams p(genesisInfo(vap::Network::MainNetwork), genesisStateRoot(vap::Network::MainNetwork));
 	BOOST_CHECK_EQUAL(p.calculateStateRoot(), h256(o["genesis_state_root"].get_str()));
 	BOOST_CHECK_EQUAL(toHex(p.genesisBlock()), toHex(fromHex(o["genesis_rlp_hex"].get_str())));
 	BOOST_CHECK_EQUAL(BlockHeader(p.genesisBlock()).hash(), h256(o["genesis_hash"].get_str()));

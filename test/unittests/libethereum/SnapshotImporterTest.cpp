@@ -1,28 +1,28 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <libethereum/SnapshotImporter.h>
-#include <libethereum/StateImporter.h>
-#include <libethereum/BlockChainImporter.h>
-#include <libethereum/SnapshotStorage.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <libvapory/SnapshotImporter.h>
+#include <libvapory/StateImporter.h>
+#include <libvapory/BlockChainImporter.h>
+#include <libvapory/SnapshotStorage.h>
+#include <test/tools/libtestvap/TestHelper.h>
 
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 
 namespace
@@ -360,8 +360,8 @@ BOOST_AUTO_TEST_CASE(SnapshotImporterSuite_importEmptyBlock)
 	BOOST_CHECK_EQUAL(header.gasUsed(), gasUsed);
 	BOOST_CHECK_EQUAL(header.timestamp(), timestamp);
 	BOOST_CHECK_EQUAL_COLLECTIONS(header.extraData().begin(), header.extraData().end(), extraData.begin(), extraData.end());
-	BOOST_CHECK_EQUAL(Ethash::mixHash(header), mixHash);
-	BOOST_CHECK_EQUAL(Ethash::nonce(header), nonce);
+	BOOST_CHECK_EQUAL(Vapash::mixHash(header), mixHash);
+	BOOST_CHECK_EQUAL(Vapash::nonce(header), nonce);
 	BOOST_CHECK_EQUAL(header.number(), parentNumber + 1);
 	BOOST_CHECK_EQUAL(header.parentHash(), parentHash);
 	BOOST_CHECK_EQUAL(importedBlock.totalDifficulty, parentTotalDifficulty + difficulty);

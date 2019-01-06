@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Common.h
  * @author Gav Wood <i@gavwood.com>
@@ -81,7 +81,7 @@ class secure_vector
 {
 public:
 	secure_vector() {}
-	secure_vector(secure_vector<T> const& /*_c*/) = default;  // See https://github.com/ethereum/libweb3core/pull/44
+	secure_vector(secure_vector<T> const& /*_c*/) = default;  // See https://github.com/vaporyco/libweb3core/pull/44
 	explicit secure_vector(size_t _size): m_data(_size) {}
 	explicit secure_vector(size_t _size, T _item): m_data(_size, _item) {}
 	explicit secure_vector(std::vector<T> const& _c): m_data(_c) {}
@@ -236,7 +236,7 @@ private:
 };
 
 /// Scope guard for invariant check in a class derived from HasInvariants.
-#if ETH_DEBUG
+#if VAP_DEBUG
 #define DEV_INVARIANT_CHECK ::dev::InvariantChecker __dev_invariantCheck(this, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__)
 #define DEV_INVARIANT_CHECK_HERE ::dev::InvariantChecker::checkInvariants(this, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__, true)
 #else
@@ -270,16 +270,16 @@ private:
 	std::chrono::high_resolution_clock::time_point m_t;
 };
 
-#define DEV_TIMED(S) for (::std::pair<::dev::TimerHelper, bool> __eth_t(S, true); __eth_t.second; __eth_t.second = false)
-#define DEV_TIMED_SCOPE(S) ::dev::TimerHelper __eth_t(S)
+#define DEV_TIMED(S) for (::std::pair<::dev::TimerHelper, bool> __vap_t(S, true); __vap_t.second; __vap_t.second = false)
+#define DEV_TIMED_SCOPE(S) ::dev::TimerHelper __vap_t(S)
 #if defined(_WIN32)
 #define DEV_TIMED_FUNCTION DEV_TIMED_SCOPE(__FUNCSIG__)
 #else
 #define DEV_TIMED_FUNCTION DEV_TIMED_SCOPE(__PRETTY_FUNCTION__)
 #endif
 
-#define DEV_TIMED_ABOVE(S, MS) for (::std::pair<::dev::TimerHelper, bool> __eth_t(::dev::TimerHelper(S, MS), true); __eth_t.second; __eth_t.second = false)
-#define DEV_TIMED_SCOPE_ABOVE(S, MS) ::dev::TimerHelper __eth_t(S, MS)
+#define DEV_TIMED_ABOVE(S, MS) for (::std::pair<::dev::TimerHelper, bool> __vap_t(::dev::TimerHelper(S, MS), true); __vap_t.second; __vap_t.second = false)
+#define DEV_TIMED_SCOPE_ABOVE(S, MS) ::dev::TimerHelper __vap_t(S, MS)
 #if defined(_WIN32)
 #define DEV_TIMED_FUNCTION_ABOVE(MS) DEV_TIMED_SCOPE_ABOVE(__FUNCSIG__, MS)
 #else

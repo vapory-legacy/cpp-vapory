@@ -1,27 +1,27 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <libethereum/EthereumPeer.h>
+#include <libvapory/VaporyPeer.h>
 #include <libp2p/Host.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::p2p;
 using namespace dev::test;
 
@@ -80,50 +80,50 @@ public:
 };
 
 
-class MockEthereumPeerObserver: public EthereumPeerObserverFace
+class MockVaporyPeerObserver: public VaporyPeerObserverFace
 {
 public:
-	void onPeerStatus(std::shared_ptr<EthereumPeer>) override {}
+	void onPeerStatus(std::shared_ptr<VaporyPeer>) override {}
 
-	void onPeerTransactions(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerTransactions(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
-	void onPeerBlockHeaders(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerBlockHeaders(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
-	void onPeerBlockBodies(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerBlockBodies(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
-	void onPeerNewHashes(std::shared_ptr<EthereumPeer>, std::vector<std::pair<h256, u256>> const&) override {}
+	void onPeerNewHashes(std::shared_ptr<VaporyPeer>, std::vector<std::pair<h256, u256>> const&) override {}
 
-	void onPeerNewBlock(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerNewBlock(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
-	void onPeerNodeData(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerNodeData(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
-	void onPeerReceipts(std::shared_ptr<EthereumPeer>, RLP const&) override {}
+	void onPeerReceipts(std::shared_ptr<VaporyPeer>, RLP const&) override {}
 
 	void onPeerAborting() override {}
 };
 
-class EthereumPeerTestFixture: public TestOutputHelper
+class VaporyPeerTestFixture: public TestOutputHelper
 {
 public:
-	EthereumPeerTestFixture():
+	VaporyPeerTestFixture():
 		session(std::make_shared<MockSession>()),
-		observer(std::make_shared<MockEthereumPeerObserver>()),
+		observer(std::make_shared<MockVaporyPeerObserver>()),
 		offset(UserPacket),
-		peer(session, &hostCap, offset, { "eth", 0 }, 0)
+		peer(session, &hostCap, offset, { "vap", 0 }, 0)
 	{
-		peer.init(63, 2, 0, h256(0), h256(0), std::shared_ptr<EthereumHostDataFace>(), observer);
+		peer.init(63, 2, 0, h256(0), h256(0), std::shared_ptr<VaporyHostDataFace>(), observer);
 	}
 
 	MockHostCapability hostCap;
 	std::shared_ptr<MockSession> session;
-	std::shared_ptr<MockEthereumPeerObserver> observer;
+	std::shared_ptr<MockVaporyPeerObserver> observer;
 	uint8_t offset;
-	EthereumPeer peer;
+	VaporyPeer peer;
 };
 
-BOOST_FIXTURE_TEST_SUITE(EthereumPeerSuite, EthereumPeerTestFixture)
+BOOST_FIXTURE_TEST_SUITE(VaporyPeerSuite, VaporyPeerTestFixture)
 
-BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeData)
+BOOST_AUTO_TEST_CASE(VaporyPeerSuite_requestNodeData)
 {
 	h256 dataHash("0x949d991d685738352398dff73219ab19c62c06e6f8ce899fbae755d5127ed1ef");
 	peer.requestNodeData({ dataHash });
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeData)
 	BOOST_REQUIRE_EQUAL(static_cast<h256>(rlp[0]), dataHash);
 }
 
-BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataSeveralHashes)
+BOOST_AUTO_TEST_CASE(VaporyPeerSuite_requestNodeDataSeveralHashes)
 {
 	h256 dataHash0("0x949d991d685738352398dff73219ab19c62c06e6f8ce899fbae755d5127ed1ef");
 	h256 dataHash1("0x0e4562a10381dec21b205ed72637e6b1b523bdd0e4d4d50af5cd23dd4500a217");
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataSeveralHashes)
 	BOOST_REQUIRE_EQUAL(static_cast<h256>(rlp[2]), dataHash2);
 }
 
-BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataAddsAskingNote)
+BOOST_AUTO_TEST_CASE(VaporyPeerSuite_requestNodeDataAddsAskingNote)
 {
 	h256 dataHash("0x949d991d685738352398dff73219ab19c62c06e6f8ce899fbae755d5127ed1ef");
 	peer.requestNodeData({ h256("0x949d991d685738352398dff73219ab19c62c06e6f8ce899fbae755d5127ed1ef") });
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataAddsAskingNote)
 	BOOST_REQUIRE(session->m_notes["ask"] == "NodeData");
 }
 
-BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataWithNoHashesSetsAskNoteToNothing)
+BOOST_AUTO_TEST_CASE(VaporyPeerSuite_requestNodeDataWithNoHashesSetsAskNoteToNothing)
 {
 	peer.requestNodeData({});
 
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestNodeDataWithNoHashesSetsAskNoteToN
 	BOOST_REQUIRE(session->m_notes["ask"] == "Nothing");
 }
 
-BOOST_AUTO_TEST_CASE(EthereumPeerSuite_requestReceipts)
+BOOST_AUTO_TEST_CASE(VaporyPeerSuite_requestReceipts)
 {
 	h256 blockHash0("0x949d991d685738352398dff73219ab19c62c06e6f8ce899fbae755d5127ed1ef");
 	h256 blockHash1("0x0e4562a10381dec21b205ed72637e6b1b523bdd0e4d4d50af5cd23dd4500a217");

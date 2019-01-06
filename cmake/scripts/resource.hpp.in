@@ -6,16 +6,16 @@
 
 namespace dev
 {
-namespace eth
+namespace vap
 {
 
-class ${ETH_RESOURCE_NAME}
+class ${VAP_RESOURCE_NAME}
 {
 public:
-	${ETH_RESOURCE_NAME}()
+	${VAP_RESOURCE_NAME}()
 	{
-${ETH_RESULT_DATA}
-${ETH_RESULT_INIT}
+${VAP_RESULT_DATA}
+${VAP_RESULT_INIT}
 	}
 
 	std::string loadResourceAsString(std::string _name) { return std::string(m_resources[_name], m_sizes[_name]); }

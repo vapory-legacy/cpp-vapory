@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file BlockChainInsert.cpp
  * @author Christoph Jentzsch <cj@ethdev.com>, Dimitry Khokhlov <dimitry@ethdev.com>
@@ -24,16 +24,16 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
 #include <libdevcore/FileSystem.h>
-#include <libethcore/BasicAuthority.h>
-#include <libethereum/BlockChain.h>
-#include <libethereum/Block.h>
-#include <libethereum/GenesisInfo.h>
-#include <test/tools/libtesteth/TestHelper.h>
-#include <test/tools/libtesteth/BlockChainHelper.h>
+#include <libvapcore/BasicAuthority.h>
+#include <libvapory/BlockChain.h>
+#include <libvapory/Block.h>
+#include <libvapory/GenesisInfo.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <test/tools/libtestvap/BlockChainHelper.h>
 using namespace std;
 using namespace json_spirit;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 
 namespace dev {
 
@@ -47,7 +47,7 @@ public:
 	TestClient(Secret const& _authority):
 		m_path(boost::filesystem::temp_directory_path().string() + "/" + toString(std::chrono::system_clock::now().time_since_epoch().count()) + "-" + FixedHash<4>::random().hex()),
 		m_stateDB(State::openDB(m_path, h256())),
-		m_bc(eth::ChainParams(c_genesisInfoTestBasicAuthority), m_path)
+		m_bc(vap::ChainParams(c_genesisInfoTestBasicAuthority), m_path)
 	{
 		sealer()->setOption("authority", rlp(_authority.makeInsecure()));
 		sealer()->setOption("authorities", rlpList(toAddress(_authority)));

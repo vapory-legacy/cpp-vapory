@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file difficulty.cpp
  * @author Christoph Jentzsch <cj@ethdev.com>
@@ -20,15 +20,15 @@
  * difficulty calculation tests.
  */
 
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 #include <test/tools/fuzzTesting/fuzzHelper.h>
-#include <libethashseal/Ethash.h>
-#include <libethashseal/GenesisInfo.h>
-#include <libethereum/ChainParams.h>
+#include <libvapashseal/Vapash.h>
+#include <libvapashseal/GenesisInfo.h>
+#include <libvapory/ChainParams.h>
 #include <boost/filesystem/path.hpp>
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 
 namespace fs = boost::filesystem;
 namespace js = json_spirit;
@@ -44,7 +44,7 @@ std::string const c_testDifficulty = R"(
 )";
 h256 const nonzeroHash = sha3("whatever nonempty string");
 
-void fillDifficulty(boost::filesystem::path const& _testFileFullName, Ethash& _sealEngine)
+void fillDifficulty(boost::filesystem::path const& _testFileFullName, Vapash& _sealEngine)
 {
 	int testN = 0;
 	ostringstream finalTest;
@@ -99,7 +99,7 @@ void fillDifficulty(boost::filesystem::path const& _testFileFullName, Ethash& _s
 	writeFile(_testFileFullName, asBytes(testFile));
 }
 
-void testDifficulty(fs::path const& _testFileFullName, Ethash& _sealEngine)
+void testDifficulty(fs::path const& _testFileFullName, Vapash& _sealEngine)
 {
 	//Test File
 	js::mValue v;
@@ -144,8 +144,8 @@ BOOST_AUTO_TEST_CASE(difficultyTestsFrontier)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyFrontier.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::FrontierTest)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::FrontierTest)));
 
 	if (dev::test::Options::get().filltests)
 		fillDifficulty(testFileFullName, sealEngine);
@@ -157,8 +157,8 @@ BOOST_AUTO_TEST_CASE(difficultyTestsRopsten)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyRopsten.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::Ropsten)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::Ropsten)));
 
 	if (dev::test::Options::get().filltests)
 		fillDifficulty(testFileFullName, sealEngine);
@@ -170,8 +170,8 @@ BOOST_AUTO_TEST_CASE(difficultyTestsHomestead)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyHomestead.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::HomesteadTest)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::HomesteadTest)));
 
 	if (dev::test::Options::get().filltests)
 		fillDifficulty(testFileFullName, sealEngine);
@@ -183,8 +183,8 @@ BOOST_AUTO_TEST_CASE(difficultyByzantium)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyByzantium.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::ByzantiumTest)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::ByzantiumTest)));
 
 	if (dev::test::Options::get().filltests)
 		fillDifficulty(testFileFullName, sealEngine);
@@ -196,8 +196,8 @@ BOOST_AUTO_TEST_CASE(difficultyTestsMainNetwork)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyMainNetwork.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::MainNetworkTest)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::MainNetworkTest)));
 
 	if (dev::test::Options::get().filltests)
 		fillDifficulty(testFileFullName, sealEngine);
@@ -209,8 +209,8 @@ BOOST_AUTO_TEST_CASE(difficultyTestsCustomMainNetwork)
 {
 	fs::path const testFileFullName = test::getTestPath() / fs::path("BasicTests/difficultyCustomMainNetwork.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::MainNetworkTest)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::MainNetworkTest)));
 
 	if (dev::test::Options::get().filltests)
 	{
@@ -275,8 +275,8 @@ BOOST_AUTO_TEST_CASE(basicDifficultyTest)
 {
 	fs::path const testPath = test::getTestPath() / fs::path("BasicTests/difficulty.json");
 
-	Ethash sealEngine;
-	sealEngine.setChainParams(ChainParams(genesisInfo(eth::Network::MainNetwork)));
+	Vapash sealEngine;
+	sealEngine.setChainParams(ChainParams(genesisInfo(vap::Network::MainNetwork)));
 
 	testDifficulty(testPath, sealEngine);
 }

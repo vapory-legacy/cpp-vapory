@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Test.h
  * @authors:
@@ -26,7 +26,7 @@
 namespace dev
 {
 
-namespace eth
+namespace vap
 {
 class Client;
 }
@@ -37,7 +37,7 @@ namespace rpc
 class Test: public TestFace
 {
 public:
-	Test(eth::Client& _eth);
+	Test(vap::Client& _vap);
 	virtual RPCModules implementedModules() const override
 	{
 		return RPCModules{RPCModule{"test", "1.0"}};
@@ -50,7 +50,7 @@ public:
 	virtual bool test_rewindToBlock(int _number) override;
 
 private:
-	eth::Client& m_eth;
+	vap::Client& m_vap;
 };
 
 }

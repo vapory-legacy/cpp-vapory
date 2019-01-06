@@ -2,9 +2,9 @@ file(GLOB sources "*.cpp" "*.h")
 
 add_library(web3jsonrpc ${sources})
 
-jsonrpcstub_create(web3jsonrpc eth.json
-	dev::rpc::EthFace ${CMAKE_CURRENT_SOURCE_DIR} EthFace
-	EthClient ${CMAKE_CURRENT_BINARY_DIR} EthClient
+jsonrpcstub_create(web3jsonrpc vap.json
+	dev::rpc::VapFace ${CMAKE_CURRENT_SOURCE_DIR} VapFace
+	VapClient ${CMAKE_CURRENT_BINARY_DIR} VapClient
 )
 
 jsonrpcstub_create(web3jsonrpc debug.json
@@ -32,9 +32,9 @@ jsonrpcstub_create(web3jsonrpc admin_net.json
 	AdminNetClient ${CMAKE_CURRENT_BINARY_DIR} AdminNetClient
 )
 
-jsonrpcstub_create(web3jsonrpc admin_eth.json
-	dev::rpc::AdminEthFace ${CMAKE_CURRENT_SOURCE_DIR} AdminEthFace
-	AdminEthClient ${CMAKE_CURRENT_BINARY_DIR} AdminEthClient
+jsonrpcstub_create(web3jsonrpc admin_vap.json
+	dev::rpc::AdminVapFace ${CMAKE_CURRENT_SOURCE_DIR} AdminVapFace
+	AdminVapClient ${CMAKE_CURRENT_BINARY_DIR} AdminVapClient
 )
 
 jsonrpcstub_create(web3jsonrpc admin_utils.json
@@ -54,4 +54,4 @@ jsonrpcstub_create(web3jsonrpc test.json
 
 target_include_directories(web3jsonrpc PRIVATE ../utils)
 
-target_link_libraries(web3jsonrpc ethashseal webthree whisper JsonRpcCpp::Server)
+target_link_libraries(web3jsonrpc vapashseal webthree whisper JsonRpcCpp::Server)

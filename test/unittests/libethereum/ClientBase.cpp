@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
  */
 /** @file ClientBase.cpp
  * @author Marek Kotewicz <marek@ethdev.com>
@@ -21,14 +21,14 @@
 
 #include <boost/test/unit_test.hpp>
 #include <libdevcore/CommonJS.h>
-#include <libethashseal/Ethash.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
-#include <test/tools/libtesteth/TestUtils.h>
+#include <libvapashseal/Vapash.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
+#include <test/tools/libtestvap/TestUtils.h>
 #include <test/tools/libtestutils/FixedClient.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 
 BOOST_FIXTURE_TEST_SUITE(ClientBase, ParallelClientBaseFixture)
@@ -36,7 +36,7 @@ BOOST_FIXTURE_TEST_SUITE(ClientBase, ParallelClientBaseFixture)
 BOOST_AUTO_TEST_CASE(blocks)
 {
 	TestOutputHelper testOutputHelper{};
-	enumerateClients([](Json::Value const& _json, dev::eth::ClientBase& _client) -> void
+	enumerateClients([](Json::Value const& _json, dev::vap::ClientBase& _client) -> void
 	{
 		auto compareState = [&_client](Json::Value const& _o, string const& _name, BlockNumber _blockNumber) -> void
 		{
@@ -45,25 +45,25 @@ BOOST_AUTO_TEST_CASE(blocks)
 			// balanceAt
 			u256 expectedBalance = u256(_o["balance"].asString());
 			u256 balance = _client.balanceAt(address, _blockNumber);
-			ETH_CHECK_EQUAL(expectedBalance, balance);
+			VAP_CHECK_EQUAL(expectedBalance, balance);
 
 			// countAt
 			u256 expectedCount = u256(_o["nonce"].asString());
 			u256 count = _client.countAt(address,  _blockNumber);
-			ETH_CHECK_EQUAL(expectedCount, count);
+			VAP_CHECK_EQUAL(expectedCount, count);
 
 			// stateAt
 			for (string const& pos: _o["storage"].getMemberNames())
 			{
 				u256 expectedState = u256(_o["storage"][pos].asString());
 				u256 state = _client.stateAt(address, u256(pos), _blockNumber);
-				ETH_CHECK_EQUAL(expectedState, state);
+				VAP_CHECK_EQUAL(expectedState, state);
 			}
 
 			// codeAt
 			bytes expectedCode = fromHex(_o["code"].asString());
 			bytes code = _client.codeAt(address, _blockNumber);
-			ETH_CHECK_EQUAL_COLLECTIONS(expectedCode.begin(), expectedCode.end(),
+			VAP_CHECK_EQUAL_COLLECTIONS(expectedCode.begin(), expectedCode.end(),
 										code.begin(), code.end());
 		};
 
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(blocks)
 		// number
 		unsigned expectedNumber = _json["blocks"].size();
 		unsigned number = _client.number();
-		ETH_CHECK_EQUAL(expectedNumber, number);
+		VAP_CHECK_EQUAL(expectedNumber, number);
 		
 		u256 totalDifficulty = u256(_json["genesisBlockHeader"]["difficulty"].asString());
 		for (Json::Value const& block: _json["blocks"])
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(blocks)
 			// hashFromNumber
 			h256 expectedHashFromNumber = h256(fromHex(blockHeader["hash"].asString()));
 			h256 hashFromNumber = _client.hashFromNumber(jsToInt(blockHeader["number"].asString()));
-			ETH_CHECK_EQUAL(expectedHashFromNumber, hashFromNumber);
+			VAP_CHECK_EQUAL(expectedHashFromNumber, hashFromNumber);
 			
 			// blockInfo
 			auto compareBlockInfos = [](Json::Value const& _b, BlockHeader _blockInfo) -> void
@@ -114,33 +114,33 @@ BOOST_AUTO_TEST_CASE(blocks)
 				u256 expectedBlockInfoGasUsed = u256(_b["gasUsed"].asString());
 				h256 expectedBlockInfoHash = h256(fromHex(_b["hash"].asString()));
 				h256 expectedBlockInfoMixHash = h256(fromHex(_b["mixHash"].asString()));
-				eth::Nonce expectedBlockInfoNonce = eth::Nonce(fromHex(_b["nonce"].asString()));
+				vap::Nonce expectedBlockInfoNonce = vap::Nonce(fromHex(_b["nonce"].asString()));
 				u256 expectedBlockInfoNumber = u256(_b["number"].asString());
 				h256 expectedBlockInfoParentHash = h256(fromHex(_b["parentHash"].asString()));
 				h256 expectedBlockInfoReceiptsRoot = h256(fromHex(_b["receiptTrie"].asString()));
 				u256 expectedBlockInfoTimestamp = u256(_b["timestamp"].asString());
 				h256 expectedBlockInfoTransactionsRoot = h256(fromHex(_b["transactionsTrie"].asString()));
 				h256 expectedBlockInfoUncldeHash = h256(fromHex(_b["uncleHash"].asString()));
-				ETH_CHECK_EQUAL(expectedBlockInfoBloom, _blockInfo.logBloom());
-				ETH_CHECK_EQUAL(expectedBlockInfoCoinbase, _blockInfo.author());
-				ETH_CHECK_EQUAL(expectedBlockInfoDifficulty, _blockInfo.difficulty());
-				ETH_CHECK_EQUAL_COLLECTIONS(
+				VAP_CHECK_EQUAL(expectedBlockInfoBloom, _blockInfo.logBloom());
+				VAP_CHECK_EQUAL(expectedBlockInfoCoinbase, _blockInfo.author());
+				VAP_CHECK_EQUAL(expectedBlockInfoDifficulty, _blockInfo.difficulty());
+				VAP_CHECK_EQUAL_COLLECTIONS(
 					expectedBlockInfoExtraData.begin(),
 					expectedBlockInfoExtraData.end(),
 					_blockInfo.extraData().begin(),
 					_blockInfo.extraData().end()
 				);
-				ETH_CHECK_EQUAL(expectedBlockInfoGasLimit, _blockInfo.gasLimit());
-				ETH_CHECK_EQUAL(expectedBlockInfoGasUsed, _blockInfo.gasUsed());
-				ETH_CHECK_EQUAL(expectedBlockInfoHash, _blockInfo.hash());
-				ETH_CHECK_EQUAL(expectedBlockInfoMixHash, Ethash::mixHash(_blockInfo));
-				ETH_CHECK_EQUAL(expectedBlockInfoNonce, Ethash::nonce(_blockInfo));
-				ETH_CHECK_EQUAL(expectedBlockInfoNumber, _blockInfo.number());
-				ETH_CHECK_EQUAL(expectedBlockInfoParentHash, _blockInfo.parentHash());
-				ETH_CHECK_EQUAL(expectedBlockInfoReceiptsRoot, _blockInfo.receiptsRoot());
-				ETH_CHECK_EQUAL(expectedBlockInfoTimestamp, _blockInfo.timestamp());
-				ETH_CHECK_EQUAL(expectedBlockInfoTransactionsRoot, _blockInfo.transactionsRoot());
-				ETH_CHECK_EQUAL(expectedBlockInfoUncldeHash, _blockInfo.sha3Uncles());
+				VAP_CHECK_EQUAL(expectedBlockInfoGasLimit, _blockInfo.gasLimit());
+				VAP_CHECK_EQUAL(expectedBlockInfoGasUsed, _blockInfo.gasUsed());
+				VAP_CHECK_EQUAL(expectedBlockInfoHash, _blockInfo.hash());
+				VAP_CHECK_EQUAL(expectedBlockInfoMixHash, Vapash::mixHash(_blockInfo));
+				VAP_CHECK_EQUAL(expectedBlockInfoNonce, Vapash::nonce(_blockInfo));
+				VAP_CHECK_EQUAL(expectedBlockInfoNumber, _blockInfo.number());
+				VAP_CHECK_EQUAL(expectedBlockInfoParentHash, _blockInfo.parentHash());
+				VAP_CHECK_EQUAL(expectedBlockInfoReceiptsRoot, _blockInfo.receiptsRoot());
+				VAP_CHECK_EQUAL(expectedBlockInfoTimestamp, _blockInfo.timestamp());
+				VAP_CHECK_EQUAL(expectedBlockInfoTransactionsRoot, _blockInfo.transactionsRoot());
+				VAP_CHECK_EQUAL(expectedBlockInfoUncldeHash, _blockInfo.sha3Uncles());
 			};
 
 			BlockHeader blockInfo((static_cast<FixedClient&>(_client)).bc().headerData(blockHash), HeaderData);
@@ -150,8 +150,8 @@ BOOST_AUTO_TEST_CASE(blocks)
 			unsigned expectedBlockDetailsNumber = jsToInt(blockHeader["number"].asString());
 			totalDifficulty += u256(blockHeader["difficulty"].asString());
 			BlockDetails blockDetails = _client.blockDetails(blockHash);
-			ETH_CHECK_EQUAL(expectedBlockDetailsNumber, blockDetails.number);
-			ETH_CHECK_EQUAL(totalDifficulty, blockDetails.totalDifficulty);
+			VAP_CHECK_EQUAL(expectedBlockDetailsNumber, blockDetails.number);
+			VAP_CHECK_EQUAL(totalDifficulty, blockDetails.totalDifficulty);
 			
 			auto compareTransactions = [](Json::Value const& _t, Transaction _transaction) -> void
 			{
@@ -163,29 +163,29 @@ BOOST_AUTO_TEST_CASE(blocks)
 				u256 expectedTransactionSignatureS = h256(fromHex(_t["s"].asString()));
 //				unsigned expectedTransactionSignatureV = jsToInt(t["v"].asString());
 				
-				ETH_CHECK_EQUAL_COLLECTIONS(
+				VAP_CHECK_EQUAL_COLLECTIONS(
 					expectedTransactionData.begin(),
 					expectedTransactionData.end(),
 					_transaction.data().begin(),
 					_transaction.data().end()
 				);
-				ETH_CHECK_EQUAL(expectedTransactionGasLimit, _transaction.gas());
-				ETH_CHECK_EQUAL(expectedTransactionGasPrice, _transaction.gasPrice());
-				ETH_CHECK_EQUAL(expectedTransactionNonce, _transaction.nonce());
-				ETH_CHECK_EQUAL(expectedTransactionSignatureR, _transaction.signature().r);
-				ETH_CHECK_EQUAL(expectedTransactionSignatureS, _transaction.signature().s);
-//				ETH_CHECK_EQUAL(expectedTransactionSignatureV, _transaction.signature().v); // 27 === 0x0, 28 === 0x1, not sure why
+				VAP_CHECK_EQUAL(expectedTransactionGasLimit, _transaction.gas());
+				VAP_CHECK_EQUAL(expectedTransactionGasPrice, _transaction.gasPrice());
+				VAP_CHECK_EQUAL(expectedTransactionNonce, _transaction.nonce());
+				VAP_CHECK_EQUAL(expectedTransactionSignatureR, _transaction.signature().r);
+				VAP_CHECK_EQUAL(expectedTransactionSignatureS, _transaction.signature().s);
+//				VAP_CHECK_EQUAL(expectedTransactionSignatureV, _transaction.signature().v); // 27 === 0x0, 28 === 0x1, not sure why
 			};
 
 			Transactions ts = _client.transactions(blockHash);
 			TransactionHashes tHashes = _client.transactionHashes(blockHash);
 			unsigned tsCount = _client.transactionCount(blockHash);
 			
-			ETH_REQUIRE(transactions.size() == ts.size());
-			ETH_REQUIRE(transactions.size() == tHashes.size());
+			VAP_REQUIRE(transactions.size() == ts.size());
+			VAP_REQUIRE(transactions.size() == tHashes.size());
 			
 			// transactionCount
-			ETH_CHECK_EQUAL(transactions.size(), tsCount);
+			VAP_CHECK_EQUAL(transactions.size(), tsCount);
 			
 			for (unsigned i = 0; i < tsCount; i++)
 			{
@@ -203,12 +203,12 @@ BOOST_AUTO_TEST_CASE(blocks)
 				compareTransactions(t, ts[i]);
 				
 				// transactionHashes
-				ETH_CHECK_EQUAL(transaction.sha3(), tHashes[i]);
+				VAP_CHECK_EQUAL(transaction.sha3(), tHashes[i]);
 			}
 			
 			// uncleCount
 			unsigned usCount = _client.uncleCount(blockHash);
-			ETH_CHECK_EQUAL(uncles.size(), usCount);
+			VAP_CHECK_EQUAL(uncles.size(), usCount);
 			
 			for (unsigned i = 0; i < usCount; i++)
 			{

@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file fuzzHelper.h
  * @author Dimitry Khokhlov <winsvega@mail.ru>
@@ -23,11 +23,11 @@
 #include <random>
 #include <boost/filesystem/path.hpp>
 
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 #include <libdevcore/CommonIO.h>
 #include <libdevcore/CommonData.h>
-#include <libevm/Instruction.h>
-#include <test/tools/libtesteth/TestSuite.h>
+#include <libvvm/Instruction.h>
+#include <test/tools/libtestvap/TestSuite.h>
 
 #pragma once
 
@@ -57,7 +57,7 @@ public:
 		All
 	};
 	RandomCodeOptions();
-	void setWeight(dev::eth::Instruction _opCode, int _weight);
+	void setWeight(dev::vap::Instruction _opCode, int _weight);
 	void addAddress(dev::Address const& _address, AddressType _type);
 	dev::Address getRandomAddress(AddressType _type = AddressType::All) const;
 	int getWeightedRandomOpcode() const;
@@ -125,7 +125,7 @@ public:
 	static int weightedOpcode(std::vector<int>& _weights);
 
 private:
-	static std::string fillArguments(dev::eth::Instruction _opcode, RandomCodeOptions const& _options);
+	static std::string fillArguments(dev::vap::Instruction _opcode, RandomCodeOptions const& _options);
 	static std::string getPushCode(int _value);
 	static std::string getPushCode(std::string const& _hex);
 	static int recursiveRLP(std::string& _result, int _depth, std::string& _debug);

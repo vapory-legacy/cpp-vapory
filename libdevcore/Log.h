@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Log.h
  * @author Gav Wood <i@gavwood.com>
@@ -70,7 +70,7 @@ struct VerbosityHolder
 	int oldLogVerbosity;
 };
 
-#define ETH_THREAD_CONTEXT(name) for (std::pair<dev::ThreadContext, bool> __eth_thread_context(name, true); p.second; p.second = false)
+#define VAP_THREAD_CONTEXT(name) for (std::pair<dev::ThreadContext, bool> __vap_thread_context(name, true); p.second; p.second = false)
 
 class ThreadContext
 {
@@ -138,96 +138,96 @@ public:
 	{
 		switch (m_logTag)
 		{
-		case LogTag::Url: m_sstr << EthNavyUnder; break;
-		case LogTag::Error: m_sstr << EthRedBold; break;
-		case LogTag::Special: m_sstr << EthWhiteBold; break;
+		case LogTag::Url: m_sstr << VapNavyUnder; break;
+		case LogTag::Error: m_sstr << VapRedBold; break;
+		case LogTag::Special: m_sstr << VapWhiteBold; break;
 		default:;
 		}
-		m_sstr << _t << EthReset;
+		m_sstr << _t << VapReset;
 		m_logTag = LogTag::None;
 	}
 
-	void append(unsigned long _t) { m_sstr << EthBlue << _t << EthReset; }
-	void append(long _t) { m_sstr << EthBlue << _t << EthReset; }
-	void append(unsigned int _t) { m_sstr << EthBlue << _t << EthReset; }
-	void append(int _t) { m_sstr << EthBlue << _t << EthReset; }
-	void append(bigint const& _t) { m_sstr << EthNavy << _t << EthReset; }
-	void append(u256 const& _t) { m_sstr << EthNavy << _t << EthReset; }
-	void append(u160 const& _t) { m_sstr << EthNavy << _t << EthReset; }
-	void append(double _t) { m_sstr << EthBlue << _t << EthReset; }
-	template <unsigned N> void append(FixedHash<N> const& _t) { m_sstr << EthTeal "#" << _t.abridged() << EthReset; }
-	void append(h160 const& _t) { m_sstr << EthRed "@" << _t.abridged() << EthReset; }
-	void append(h256 const& _t) { m_sstr << EthCyan "#" << _t.abridged() << EthReset; }
-	void append(h512 const& _t) { m_sstr << EthTeal "##" << _t.abridged() << EthReset; }
-	void append(std::string const& _t) { m_sstr << EthGreen "\"" + _t + "\"" EthReset; }
-	void append(bytes const& _t) { m_sstr << EthYellow "%" << toHex(_t) << EthReset; }
-	void append(bytesConstRef _t) { m_sstr << EthYellow "%" << toHex(_t) << EthReset; }
+	void append(unsigned long _t) { m_sstr << VapBlue << _t << VapReset; }
+	void append(long _t) { m_sstr << VapBlue << _t << VapReset; }
+	void append(unsigned int _t) { m_sstr << VapBlue << _t << VapReset; }
+	void append(int _t) { m_sstr << VapBlue << _t << VapReset; }
+	void append(bigint const& _t) { m_sstr << VapNavy << _t << VapReset; }
+	void append(u256 const& _t) { m_sstr << VapNavy << _t << VapReset; }
+	void append(u160 const& _t) { m_sstr << VapNavy << _t << VapReset; }
+	void append(double _t) { m_sstr << VapBlue << _t << VapReset; }
+	template <unsigned N> void append(FixedHash<N> const& _t) { m_sstr << VapTeal "#" << _t.abridged() << VapReset; }
+	void append(h160 const& _t) { m_sstr << VapRed "@" << _t.abridged() << VapReset; }
+	void append(h256 const& _t) { m_sstr << VapCyan "#" << _t.abridged() << VapReset; }
+	void append(h512 const& _t) { m_sstr << VapTeal "##" << _t.abridged() << VapReset; }
+	void append(std::string const& _t) { m_sstr << VapGreen "\"" + _t + "\"" VapReset; }
+	void append(bytes const& _t) { m_sstr << VapYellow "%" << toHex(_t) << VapReset; }
+	void append(bytesConstRef _t) { m_sstr << VapYellow "%" << toHex(_t) << VapReset; }
 	template <class T> void append(std::vector<T> const& _t)
 	{
-		m_sstr << EthWhite "[" EthReset;
+		m_sstr << VapWhite "[" VapReset;
 		int n = 0;
 		for (T const& i: _t)
 		{
-			m_sstr << (n++ ? EthWhite ", " EthReset : "");
+			m_sstr << (n++ ? VapWhite ", " VapReset : "");
 			append(i);
 		}
-		m_sstr << EthWhite "]" EthReset;
+		m_sstr << VapWhite "]" VapReset;
 	}
 	template <class T> void append(std::set<T> const& _t)
 	{
-		m_sstr << EthYellow "{" EthReset;
+		m_sstr << VapYellow "{" VapReset;
 		int n = 0;
 		for (T const& i: _t)
 		{
-			m_sstr << (n++ ? EthYellow ", " EthReset : "");
+			m_sstr << (n++ ? VapYellow ", " VapReset : "");
 			append(i);
 		}
-		m_sstr << EthYellow "}" EthReset;
+		m_sstr << VapYellow "}" VapReset;
 	}
 	template <class T, class U> void append(std::map<T, U> const& _t)
 	{
-		m_sstr << EthLime "{" EthReset;
+		m_sstr << VapLime "{" VapReset;
 		int n = 0;
 		for (auto const& i: _t)
 		{
-			m_sstr << (n++ ? EthLime ", " EthReset : "");
+			m_sstr << (n++ ? VapLime ", " VapReset : "");
 			append(i.first);
-			m_sstr << (n++ ? EthLime ": " EthReset : "");
+			m_sstr << (n++ ? VapLime ": " VapReset : "");
 			append(i.second);
 		}
-		m_sstr << EthLime "}" EthReset;
+		m_sstr << VapLime "}" VapReset;
 	}
 	template <class T> void append(std::unordered_set<T> const& _t)
 	{
-		m_sstr << EthYellow "{" EthReset;
+		m_sstr << VapYellow "{" VapReset;
 		int n = 0;
 		for (T const& i: _t)
 		{
-			m_sstr << (n++ ? EthYellow ", " EthReset : "");
+			m_sstr << (n++ ? VapYellow ", " VapReset : "");
 			append(i);
 		}
-		m_sstr << EthYellow "}" EthReset;
+		m_sstr << VapYellow "}" VapReset;
 	}
 	template <class T, class U> void append(std::unordered_map<T, U> const& _t)
 	{
-		m_sstr << EthLime "{" EthReset;
+		m_sstr << VapLime "{" VapReset;
 		int n = 0;
 		for (auto const& i: _t)
 		{
-			m_sstr << (n++ ? EthLime ", " EthReset : "");
+			m_sstr << (n++ ? VapLime ", " VapReset : "");
 			append(i.first);
-			m_sstr << (n++ ? EthLime ": " EthReset : "");
+			m_sstr << (n++ ? VapLime ": " VapReset : "");
 			append(i.second);
 		}
-		m_sstr << EthLime "}" EthReset;
+		m_sstr << VapLime "}" VapReset;
 	}
 	template <class T, class U> void append(std::pair<T, U> const& _t)
 	{
-		m_sstr << EthPurple "(" EthReset;
+		m_sstr << VapPurple "(" VapReset;
 		append(_t.first);
-		m_sstr << EthPurple ", " EthReset;
+		m_sstr << VapPurple ", " VapReset;
 		append(_t.second);
-		m_sstr << EthPurple ")" EthReset;
+		m_sstr << VapPurple ")" VapReset;
 	}
 	template <class T> void append(T const& _t)
 	{
@@ -264,7 +264,7 @@ public:
 /// A "hacky" way to execute the next statement on COND.
 /// We need such a thing due to the dangling else problem and the need
 /// for the logging macros to end with the stream object and not a closing brace '}'
-#define DEV_STATEMENT_IF(COND) for (bool i_eth_if_ = (COND); i_eth_if_; i_eth_if_ = false)
+#define DEV_STATEMENT_IF(COND) for (bool i_vap_if_ = (COND); i_vap_if_; i_vap_if_ = false)
 /// A "hacky" way to skip the next statement.
 /// We need such a thing due to the dangling else problem and the need
 /// for the logging macros to end with the stream object and not a closing brace '}'

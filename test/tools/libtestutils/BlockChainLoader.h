@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
  */
 /** @file BlockChainLoader.h
  * @author Marek Kotewicz <marek@ethdev.com>
@@ -22,9 +22,9 @@
 #pragma once
 #include <json/json.h>
 #include <libdevcore/TransientDirectory.h>
-#include <libethereum/BlockChain.h>
-#include <libethereum/Block.h>
-#include <libethashseal/GenesisInfo.h>
+#include <libvapory/BlockChain.h>
+#include <libvapory/Block.h>
+#include <libvapashseal/GenesisInfo.h>
 
 namespace dev
 {
@@ -38,15 +38,15 @@ namespace test
 class BlockChainLoader
 {
 public:
-	BlockChainLoader(Json::Value const& _json, eth::Network _sealEngineNetwork = eth::Network::TransitionnetTest);
-	eth::BlockChain const& bc() const { return *m_bc; }
-	eth::State const& state() const { return m_block.state(); }	// TODO remove?
-	eth::Block const& block() const { return m_block; }
+	BlockChainLoader(Json::Value const& _json, vap::Network _sealEngineNetwork = vap::Network::TransitionnetTest);
+	vap::BlockChain const& bc() const { return *m_bc; }
+	vap::State const& state() const { return m_block.state(); }	// TODO remove?
+	vap::Block const& block() const { return m_block; }
 
 private:
 	TransientDirectory m_dir;
-	std::unique_ptr<eth::BlockChain> m_bc;
-	eth::Block m_block;
+	std::unique_ptr<vap::BlockChain> m_bc;
+	vap::Block m_block;
 };
 
 }

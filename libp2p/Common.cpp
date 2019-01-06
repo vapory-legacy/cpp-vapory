@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Common.cpp
  * @author Gav Wood <i@gavwood.com>
@@ -37,35 +37,35 @@ bool dev::p2p::NodeIPEndpoint::test_allowLocal = false;
 //⊳⊲◀▶■▣▢□▷◁▧▨▩▲◆◉◈◇◎●◍◌○◼☑☒☎☢☣☰☀♽♥♠✩✭❓✔✓✖✕✘✓✔✅⚒⚡⦸⬌∅⁕«««»»»⚙━┅┉▬
 
 #if defined(_WIN32)
-const char* NetWarn::name() { return EthYellow "N" EthRed " X"; }
-const char* NetImpolite::name() { return EthYellow "N" EthRed " !"; }
-const char* NetNote::name() { return EthYellow "N" EthBlue " i"; }
-const char* NetConnect::name() { return EthYellow "N" EthYellow " C"; }
-const char* NetMessageSummary::name() { return EthYellow "N" EthWhite " ."; }
-const char* NetMessageDetail::name() { return EthYellow "N" EthGray " o"; }
-const char* NetTriviaSummary::name() { return EthYellow "N" EthGray " O"; }
-const char* NetTriviaDetail::name() { return EthYellow "N" EthCoal " 0"; }
-const char* NetAllDetail::name() { return EthYellow "N" EthCoal " A"; }
-const char* NetRight::name() { return EthYellow "N" EthGreen "->"; }
-const char* NetLeft::name() { return EthYellow "N" EthNavy "<-"; }
-const char* NetP2PWarn::name() { return EthYellow "N" EthRed " X"; }
-const char* NetP2PNote::name() { return EthYellow "N" EthBlue " i"; }
-const char* NetP2PConnect::name() { return EthYellow "N" EthYellow " C"; }
+const char* NetWarn::name() { return VapYellow "N" VapRed " X"; }
+const char* NetImpolite::name() { return VapYellow "N" VapRed " !"; }
+const char* NetNote::name() { return VapYellow "N" VapBlue " i"; }
+const char* NetConnect::name() { return VapYellow "N" VapYellow " C"; }
+const char* NetMessageSummary::name() { return VapYellow "N" VapWhite " ."; }
+const char* NetMessageDetail::name() { return VapYellow "N" VapGray " o"; }
+const char* NetTriviaSummary::name() { return VapYellow "N" VapGray " O"; }
+const char* NetTriviaDetail::name() { return VapYellow "N" VapCoal " 0"; }
+const char* NetAllDetail::name() { return VapYellow "N" VapCoal " A"; }
+const char* NetRight::name() { return VapYellow "N" VapGreen "->"; }
+const char* NetLeft::name() { return VapYellow "N" VapNavy "<-"; }
+const char* NetP2PWarn::name() { return VapYellow "N" VapRed " X"; }
+const char* NetP2PNote::name() { return VapYellow "N" VapBlue " i"; }
+const char* NetP2PConnect::name() { return VapYellow "N" VapYellow " C"; }
 #else
-const char* NetWarn::name() { return EthYellow "⧎" EthRed " ✘"; }
-const char* NetImpolite::name() { return EthYellow "⧎" EthRed " !"; }
-const char* NetNote::name() { return EthYellow "⧎" EthBlue " ℹ"; }
-const char* NetConnect::name() { return EthYellow "⧎" EthYellow " ▢"; }
-const char* NetMessageSummary::name() { return EthYellow "⧎" EthWhite " ◌"; }
-const char* NetMessageDetail::name() { return EthYellow "⧎" EthGray " ○"; }
-const char* NetTriviaSummary::name() { return EthYellow "⧎" EthGray " ◎"; }
-const char* NetTriviaDetail::name() { return EthYellow "⧎" EthCoal " ◍"; }
-const char* NetAllDetail::name() { return EthYellow "⧎" EthCoal " ●"; }
-const char* NetRight::name() { return EthYellow "⧎" EthGreen "▬▶"; }
-const char* NetLeft::name() { return EthYellow "⧎" EthNavy "◀▬"; }
-const char* NetP2PWarn::name() { return EthYellow "⧎" EthRed " ✘"; }
-const char* NetP2PNote::name() { return EthYellow "⧎" EthBlue " ℹ"; }
-const char* NetP2PConnect::name() { return EthYellow "⧎" EthYellow " ▢"; }
+const char* NetWarn::name() { return VapYellow "⧎" VapRed " ✘"; }
+const char* NetImpolite::name() { return VapYellow "⧎" VapRed " !"; }
+const char* NetNote::name() { return VapYellow "⧎" VapBlue " ℹ"; }
+const char* NetConnect::name() { return VapYellow "⧎" VapYellow " ▢"; }
+const char* NetMessageSummary::name() { return VapYellow "⧎" VapWhite " ◌"; }
+const char* NetMessageDetail::name() { return VapYellow "⧎" VapGray " ○"; }
+const char* NetTriviaSummary::name() { return VapYellow "⧎" VapGray " ◎"; }
+const char* NetTriviaDetail::name() { return VapYellow "⧎" VapCoal " ◍"; }
+const char* NetAllDetail::name() { return VapYellow "⧎" VapCoal " ●"; }
+const char* NetRight::name() { return VapYellow "⧎" VapGreen "▬▶"; }
+const char* NetLeft::name() { return VapYellow "⧎" VapNavy "◀▬"; }
+const char* NetP2PWarn::name() { return VapYellow "⧎" VapRed " ✘"; }
+const char* NetP2PNote::name() { return VapYellow "⧎" VapBlue " ℹ"; }
+const char* NetP2PConnect::name() { return VapYellow "⧎" VapYellow " ▢"; }
 #endif
 
 bool p2p::isPublicAddress(std::string const& _addressToCheck)
