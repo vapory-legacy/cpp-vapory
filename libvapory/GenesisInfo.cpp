@@ -40,18 +40,18 @@ R"E(
 		"difficultyBoundDivisor": "0x0800",
 		"durationLimit": "0x0d",
 		"blockReward": "0x4563918244F40000",
-		"registrar" : "0xc6d9d2cd449a754c494264e1809c50e34d64562b",
+		"registrar" : "0xdd242656dfa2af1e2c200b9708bf142f4ae783fb",
 		"networkID" : "0x1"
 	},
 	"genesis": {
-		"nonce": "0x0000000000000042",
-		"difficulty": "0x400000000",
+		"nonce": "0x70F4353057DACC53",
+		"difficulty": "0x020001",
 		"mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 		"author": "0x0000000000000000000000000000000000000000",
 		"timestamp": "0x00",
 		"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-		"extraData": "0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa",
-		"gasLimit": "0x2fefd8"
+		"extraData": "0x466f72676520696e746f20566173746e657373206f6620746865205661706f72",
+		"gasLimit": "0x400000"
 	},
 	"accounts": {
 		"0000000000000000000000000000000000000001": { "wei": "1", "precompiled": { "name": "ecrecover", "linear": { "base": 3000, "word": 0 } } },

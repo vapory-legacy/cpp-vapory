@@ -23,11 +23,12 @@ R"E(
 	"sealEngine": "Vapash",
 	"params": {
 		"accountStartNonce": "0x00",
-		"homesteadForkBlock": "0x118c30",
-		"daoHardforkBlock": "0x1d4c00",
-		"EIP150ForkBlock": "0x259518",
-		"EIP158ForkBlock": "0x28d138",
-		"byzantiumForkBlock": "0x42ae50",
+		"homesteadForkBlock": "0x0",
+		"daoHardforkBlock": "0x1",
+		"EIP150ForkBlock": "0x0",
+		"EIP158ForkBlock": "0x0",
+		"byzantiumForkBlock": "0xffffffffffffffffff",
+		"constantinopleForkBlock": "0xffffffffffffffffff",
 		"networkID" : "0x01",
 		"chainID": "0x01",
 		"maximumExtraDataSize": "0x20",
@@ -41,14 +42,14 @@ R"E(
 		"blockReward": "0x4563918244F40000"
 	},
 	"genesis": {
-		"nonce": "0x0000000000000042",
-		"difficulty": "0x400000000",
+		"nonce": "0x70F4353057DACC53",
+		"difficulty": "0x020001",
 		"mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 		"author": "0x0000000000000000000000000000000000000000",
 		"timestamp": "0x00",
 		"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-		"extraData": "0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa",
-		"gasLimit": "0x1388"
+		"extraData": "0x466f72676520696e746f20566173746e657373206f6620746865205661706f72",
+		"gasLimit": "0x400000"
 	},
 	"accounts": {
 		"0000000000000000000000000000000000000001": { "precompiled": { "name": "ecrecover", "linear": { "base": 3000, "word": 0 } } },
@@ -27003,7 +27004,40 @@ R"E(
 		},
 		"756f45e3fa69347a9a973a725e3c98bc4db0b5a0": {
 			"balance": "200000000000000000000"
-		}
+		},
+        "dd242656dfa2af1e2c200b9708bf142f4ae783fb": {
+            "balance": "1000001000000000000000000"
+        },
+        "4dfc2fd3dc36df0b4c72bfc6a72ac810cfa5025e": {
+            "balance": "1000002000000000000000000"
+        },
+        "e0550ef8f5c442b4791a51f563a434f85fbe4f3c": {
+            "balance": "1000003000000000000000000"
+        },
+        "ea053f8172faeec6669c83952a066fb9f42cd2fa": {
+            "balance": "1000004000000000000000000"
+        },
+        "f563ee9382e34fb5d2d37ac9164fc6ce2ba00f9e": {
+            "balance": "1000005000000000000000000"
+        },
+        "0ece64d9ce046ae80017cac7c3d41a242ffd44eb": {
+            "balance": "1000006000000000000000000"
+        },
+        "a0667be7b30447b379a846a3fd947c82418fbe9b": {
+            "balance": "1000007000000000000000000"
+        },
+        "ad304877d0f9d95629f12b02fbf9ba526cd444d9": {
+            "balance": "1000008000000000000000000"
+        },
+        "a21a0b28302942113a197b2526db83d591fefd44": {
+            "balance": "1000009000000000000000000"
+        },
+        "093f34b0b9aca2125f2ad8ecd2c53b541feeba7b": {
+            "balance": "1000010000000000000000000"
+        },
+        "1d6e6e2ad7fbe04c19250020f59a9e754f215398": {
+            "balance": "1000011000000000000000000"
+        }
 	}
 }
 )E";
