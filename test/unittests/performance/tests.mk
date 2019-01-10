@@ -1,11 +1,11 @@
 #
 # this makefile can be use to build and run the entire suite 
 #
-#     make -f tests.mk SOLC=solc ETHVM=ethvm EVM=evm PARITY=parity-evm all
+#     make -f tests.mk SOLC=solc VAPVM=vapvm VVM=vvm PARITY=parity-vvm all
 #
 # or build and run only a single test on a single VM
 #
-#     make -f tests.mk SOLC=solc ETHVM=ethvm pop.ran
+#     make -f tests.mk SOLC=solc VAPVM=vapvm pop.ran
 #
 # or build but not run the entire suite 
 #
@@ -15,7 +15,7 @@
 
 # the programs don't need to be at global scope
 #
-#     make -f tests.mk SOLC=solc ETHVM=../../../build/ethvm/ethvm all
+#     make -f tests.mk SOLC=solc VAPVM=../../../build/vapvm/vapvm all
 
 # define a path to these programs on make command line to pick one or more of them to run
 # the default is to do nothing
@@ -24,11 +24,11 @@ ifdef SOLC
 	SOLC_SOL_= $(SOLC) -o . --overwrite --asm --bin $*.sol 
 	SOLC_ASM_= $(SOLC) --assemble $*.asm | grep '^[0-9a-f]\+$\' > $*.bin
 endif
-ifdef ETHVM
-	ETHVM_ = $(call STATS,ethvm) $(ETHVM) $*.bin test; touch $*.ran
+ifdef VAPVM
+	VAPVM_ = $(call STATS,vapvm) $(VAPVM) $*.bin test; touch $*.ran
 endif
-ifdef EVM
-	EVM_ = $(call STATS,evm) $(EVM) --codefile $*.bin run; touch $*.ran
+ifdef VVM
+	VVM_ = $(call STATS,vvm) $(VVM) --codefile $*.bin run; touch $*.ran
 endif
 ifdef PARITY
 	PARITY_ = $(call STATS,parity) $(PARITY) stats --gas 10000000000 --code `cat $*.bin`; touch $*.ran
@@ -46,8 +46,8 @@ STATS = time -p
 #
 # .ran files are just empty targets that indicate a program ran
 %.ran : %.bin
-	$(call ETHVM_)
-	$(call EVM_)
+	$(call VAPVM_)
+	$(call VVM_)
 	$(call PARITY_)
 
 %.ran : %.c
@@ -67,7 +67,7 @@ STATS = time -p
 
 all : ops programs
 
-# EVM assembly programs for timing individual operators
+# VVM assembly programs for timing individual operators
 #
 # for many purposes the raw times will suffice.  when more accurate estimates
 # are wanted these formulas isolate the times for operators from the overhead
@@ -107,7 +107,7 @@ programs : \
 	rng.ran
 
 clean :
-	rm *.ran *.bin *.evm *.s mul64c poplnkc popincc
+	rm *.ran *.bin *.vvm *.s mul64c poplnkc popincc
 	
 rerun :
 	rm *.ran

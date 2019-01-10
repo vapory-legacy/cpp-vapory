@@ -1,24 +1,24 @@
 
 REM ---------------------------------------------------------------------------
-REM Batch file for running the unit-tests for cpp-ethereum for Windows.
+REM Batch file for running the unit-tests for cpp-vapory for Windows.
 REM
-REM The documentation for cpp-ethereum is hosted at http://cpp-ethereum.org
+REM The documentation for cpp-vapory is hosted at http://cpp-vapory.co
 REM
 REM ---------------------------------------------------------------------------
-REM This file is part of cpp-ethereum.
+REM This file is part of cpp-vapory.
 REM
-REM cpp-ethereum is free software: you can redistribute it and/or modify
+REM cpp-vapory is free software: you can redistribute it and/or modify
 REM it under the terms of the GNU General Public License as published by
 REM the Free Software Foundation, either version 3 of the License, or
 REM (at your option) any later version.
 REM
-REM cpp-ethereum is distributed in the hope that it will be useful,
+REM cpp-vapory is distributed in the hope that it will be useful,
 REM but WITHOUT ANY WARRANTY; without even the implied warranty of
 REM MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 REM GNU General Public License for more details.
 REM
 REM You should have received a copy of the GNU General Public License
-REM along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>
+REM along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>
 REM
 REM Copyright (c) 2016 cpp-ethereum contributors.
 REM ---------------------------------------------------------------------------
@@ -26,24 +26,24 @@ REM ---------------------------------------------------------------------------
 set TESTS=%1
 set CONFIGURATION=%2
 set APPVEYOR_BUILD_FOLDER=%cd%
-set ETHEREUM_DEPS_PATH=%4
+set VAPORY_DEPS_PATH=%4
 
 if "%TESTS%"=="On" (
 
     REM Copy the DLLs into the test directory which need to be able to run.
     cd %APPVEYOR_BUILD_FOLDER%\build\test\%CONFIGURATION%
-    copy %APPVEYOR_BUILD_FOLDER%\build\evmjit\libevmjit\%CONFIGURATION%\evmjit.dll .
+    copy %APPVEYOR_BUILD_FOLDER%\build\vvmjit\libvvmjit\%CONFIGURATION%\vvmjit.dll .
     copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvc*.dll" .
-    copy %ETHEREUM_DEPS_PATH%\win64\bin\OpenCl.dll .
+    copy %VAPORY_DEPS_PATH%\win64\bin\OpenCl.dll .
 
     REM Run the tests for the Interpreter
-    echo Testing testeth
-    testeth.exe -- --testpath %APPVEYOR_BUILD_FOLDER%\test\jsontests
+    echo Testing testvap
+    testvap.exe -- --testpath %APPVEYOR_BUILD_FOLDER%\test\jsontests
     IF errorlevel 1 GOTO ON-ERROR-CONDITION
 
     REM Run the tests for the JIT
-    REM echo Testing EVMJIT
-    REM testeth.exe -t VMTests,StateTests -- --vm jit --testpath %APPVEYOR_BUILD_FOLDER%\test\jsontests
+    REM echo Testing VVMJIT
+    REM testvap.exe -t VMTests,StateTests -- --vm jit --testpath %APPVEYOR_BUILD_FOLDER%\test\jsontests
     REM IF errorlevel 1 GOTO ON-ERROR-CONDITION
 
     cd ..\..\..

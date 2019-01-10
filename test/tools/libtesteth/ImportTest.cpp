@@ -1,28 +1,28 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  * Helper class for managing data when running state tests
  */
 
-#include <test/tools/libtesteth/TestHelper.h>
-#include <test/tools/libtesteth/ImportTest.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
-#include <test/tools/libtesteth/BlockChainHelper.h>
-#include <test/tools/libtesteth/Options.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <test/tools/libtestvap/ImportTest.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
+#include <test/tools/libtestvap/BlockChainHelper.h>
+#include <test/tools/libtestvap/Options.h>
 #include <test/tools/libtestutils/Common.h>
 #include <test/tools/libtestutils/TestLastBlockHashes.h>
 #include <test/tools/jsontests/BlockChainTests.h>
@@ -46,8 +46,8 @@ vector<h256> lastHashes(u256 _currentBlockNumber)
 }
 
 ImportTest::ImportTest(json_spirit::mObject const& _input, json_spirit::mObject& _output):
-	m_statePre(0, OverlayDB(), eth::BaseState::Empty),
-	m_statePost(0, OverlayDB(), eth::BaseState::Empty),
+	m_statePre(0, OverlayDB(), vap::BaseState::Empty),
+	m_statePost(0, OverlayDB(), vap::BaseState::Empty),
 	m_testInputObject(_input),
 	m_testOutputObject(_output)
 {
@@ -56,7 +56,7 @@ ImportTest::ImportTest(json_spirit::mObject const& _input, json_spirit::mObject&
 	importState(_input.at("pre").get_obj(), m_statePre);
 }
 
-void ImportTest::makeBlockchainTestFromStateTest(vector<eth::Network> const& _networks) const
+void ImportTest::makeBlockchainTestFromStateTest(vector<vap::Network> const& _networks) const
 {
     // Generate blockchain test filler
     string testnameOrig = TestOutputHelper::get().testName();
@@ -82,7 +82,7 @@ void ImportTest::makeBlockchainTestFromStateTest(vector<eth::Network> const& _ne
         // generate expect sections for this transaction
         if (m_testInputObject.count("expect"))
         {
-            State s = State(0, OverlayDB(), eth::BaseState::Empty);
+            State s = State(0, OverlayDB(), vap::BaseState::Empty);
             AccountMaskMap m;
             StateAndMap smap{s, m};
             vector<size_t> stateIndexesToPrint;
@@ -92,7 +92,7 @@ void ImportTest::makeBlockchainTestFromStateTest(vector<eth::Network> const& _ne
             {
                 // Calculate the block reward
                 ChainParams const chainParams{genesisInfo(net)};
-                EVMSchedule const schedule = chainParams.scheduleForBlockNumber(1);
+                VVMSchedule const schedule = chainParams.scheduleForBlockNumber(1);
                 u256 const blockReward = chainParams.blockReward(schedule);
 
                 TrExpectSection search{tr, smap};
@@ -165,7 +165,7 @@ bytes ImportTest::executeTest()
 {
 	assert(m_envInfo);
 
-	vector<eth::Network> networks;
+	vector<vap::Network> networks;
 	if (!Options::get().singleTestNet.empty())
 		networks.push_back(stringToNetId(Options::get().singleTestNet));
 	else
@@ -201,7 +201,7 @@ bytes ImportTest::executeTest()
     return bytes();
 }
 
-void ImportTest::checkBalance(eth::State const& _pre, eth::State const& _post, bigint _miningReward)
+void ImportTest::checkBalance(vap::State const& _pre, vap::State const& _post, bigint _miningReward)
 {
 	bigint preBalance = 0;
 	bigint postBalance = 0;
@@ -210,16 +210,16 @@ void ImportTest::checkBalance(eth::State const& _pre, eth::State const& _post, b
 	for (auto const& addr : _post.addresses())
 		postBalance += addr.second;
 
-	//account could destroy ether if it suicides to itself
+	//account could destroy vaper if it suicides to itself
 	BOOST_REQUIRE_MESSAGE(preBalance + _miningReward >= postBalance, "Error when comparing states: preBalance + miningReward < postBalance (" + toString(preBalance) + " < " + toString(postBalance) + ") " + TestOutputHelper::get().testName());
 }
 
-std::tuple<eth::State, ImportTest::ExecOutput, eth::ChangeLog> ImportTest::executeTransaction(eth::Network const _sealEngineNetwork, eth::EnvInfo const& _env, eth::State const& _preState, eth::Transaction const& _tr)
+std::tuple<vap::State, ImportTest::ExecOutput, vap::ChangeLog> ImportTest::executeTransaction(vap::Network const _sealEngineNetwork, vap::EnvInfo const& _env, vap::State const& _preState, vap::Transaction const& _tr)
 {
 	assert(m_envInfo);
 
 	State initialState = _preState;
-	ExecOutput out(std::make_pair(eth::ExecutionResult(), eth::TransactionReceipt(h256(), u256(), eth::LogEntries())));
+	ExecOutput out(std::make_pair(vap::ExecutionResult(), vap::TransactionReceipt(h256(), u256(), vap::LogEntries())));
 	try
 	{
 		unique_ptr<SealEngineFace> se(ChainParams(genesisInfo(_sealEngineNetwork)).createSealEngine());
@@ -236,7 +236,7 @@ std::tuple<eth::State, ImportTest::ExecOutput, eth::ChangeLog> ImportTest::execu
 			out = initialState.execute(_env, *se.get(), _tr, Permanence::Uncommitted);
 
 		// the changeLog might be broken under --jsontrace, because it uses intialState.execute with Permanence::Committed rather than Permanence::Uncommitted
-		eth::ChangeLog changeLog = initialState.changeLog();
+		vap::ChangeLog changeLog = initialState.changeLog();
 		ImportTest::checkBalance(_preState, initialState);
 
 		//Finalize the state manually (clear logs)
@@ -349,7 +349,7 @@ void ImportTest::importState(json_spirit::mObject const& _o, State& _state)
 	importState(_o, _state, mask);
 }
 
-void ImportTest::importTransaction (json_spirit::mObject const& _o, eth::Transaction& o_tr)
+void ImportTest::importTransaction (json_spirit::mObject const& _o, vap::Transaction& o_tr)
 {
 	if (_o.count("secretKey") > 0)
 	{
@@ -546,7 +546,7 @@ void parseJsonIntValueIntoVector(json_spirit::mValue const& _json, vector<int>& 
 
 void ImportTest::checkAllowedNetwork(std::vector<std::string> const& _networks)
 {
-	vector<eth::Network> const& allnetworks = test::getNetworks();
+	vector<vap::Network> const& allnetworks = test::getNetworks();
 	vector<string> allowedNetowks;
 	allowedNetowks.push_back("ALL");
 	for (auto const& net : allnetworks)
@@ -648,8 +648,8 @@ bool ImportTest::checkGeneralTestSectionSearch(json_spirit::mObject const& _expe
 					continue;
 
 				State postState = tr.postState;
-				eth::AccountMaskMap stateMap;
-				State expectState(0, OverlayDB(), eth::BaseState::Empty);
+				vap::AccountMaskMap stateMap;
+				State expectState(0, OverlayDB(), vap::BaseState::Empty);
 				importState(_expects.at("result").get_obj(), expectState, stateMap);
 				if (_search)
 				{
@@ -710,7 +710,7 @@ void ImportTest::traceStateDiff()
 			std::ostringstream log;
 			log << "trNetID: " << netIdToString(tr.netId) << "\n";
 			log << "trDataInd: " << tr.dataInd << " tdGasInd: " << tr.gasInd << " trValInd: " << tr.valInd << "\n";
-			dev::LogOutputStream<eth::StateTrace, false>() << log.str();
+			dev::LogOutputStream<vap::StateTrace, false>() << log.str();
 			fillJsonWithStateChange(m_statePre, tr.postState, tr.changeLog); //output std log
 		}
 	}

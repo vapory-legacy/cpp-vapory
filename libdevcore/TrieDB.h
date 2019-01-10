@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file TrieDB.h
  * @author Gav Wood <i@gavwood.com>
@@ -550,7 +550,7 @@ template <class DB> void GenericTrieDB<DB>::iterator::next(NibbleSlice _key)
 			}
 			if (!rlp.isList() || (rlp.itemCount() != 2 && rlp.itemCount() != 17))
 			{
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 				cwarn << "BIG FAT ERROR. STATE TRIE CORRUPTED!!!!!";
 				cwarn << b.rlp.size() << toHex(b.rlp);
 				cwarn << rlp;
@@ -685,7 +685,7 @@ template <class DB> void GenericTrieDB<DB>::iterator::next()
 			}
 			if (!(rlp.isList() && (rlp.itemCount() == 2 || rlp.itemCount() == 17)))
 			{
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 				cwarn << "BIG FAT ERROR. STATE TRIE CORRUPTED!!!!!";
 				cwarn << b.rlp.size() << toHex(b.rlp);
 				cwarn << rlp;
@@ -773,7 +773,7 @@ template <class KeyType, class DB> typename SpecificTrieDB<KeyType, DB>::iterato
 
 template <class DB> void GenericTrieDB<DB>::insert(bytesConstRef _key, bytesConstRef _value)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "Insert" << toHex(_key.cropped(0, 4)) << "=>" << toHex(_value);
 #endif
 
@@ -833,7 +833,7 @@ template <class DB> bytes GenericTrieDB<DB>::mergeAt(RLP const& _orig, NibbleSli
 
 template <class DB> bytes GenericTrieDB<DB>::mergeAt(RLP const& _orig, h256 const& _origHash, NibbleSlice _k, bytesConstRef _v, bool _inLine)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "mergeAt " << _orig << _k << sha3(_orig.data());
 #endif
 
@@ -926,7 +926,7 @@ template <class DB> void GenericTrieDB<DB>::mergeAtAux(RLPStream& _out, RLP cons
 
 template <class DB> void GenericTrieDB<DB>::remove(bytesConstRef _key)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "Remove" << toHex(_key.cropped(0, 4).toBytes());
 #endif
 
@@ -953,7 +953,7 @@ template <class DB> std::string GenericTrieDB<DB>::deref(RLP const& _n) const
 
 template <class DB> bytes GenericTrieDB<DB>::deleteAt(RLP const& _orig, NibbleSlice _k)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "deleteAt " << _orig << _k << sha3(_orig.data());
 #endif
 
@@ -1077,7 +1077,7 @@ template <class DB> bool GenericTrieDB<DB>::deleteAtAux(RLPStream& _out, RLP con
 
 template <class DB> bytes GenericTrieDB<DB>::place(RLP const& _orig, NibbleSlice _k, bytesConstRef _s)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "place " << _orig << _k;
 #endif
 
@@ -1102,7 +1102,7 @@ template <class DB> bytes GenericTrieDB<DB>::place(RLP const& _orig, NibbleSlice
 // out2: [V0, ..., V15, null] iff exists i: !!Vi  -- OR --  null otherwise
 template <class DB> bytes GenericTrieDB<DB>::remove(RLP const& _orig)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "kill " << _orig;
 #endif
 
@@ -1129,7 +1129,7 @@ template <class DB> RLPStream& GenericTrieDB<DB>::streamNode(RLPStream& _s, byte
 
 template <class DB> bytes GenericTrieDB<DB>::cleve(RLP const& _orig, unsigned _s)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "cleve " << _orig << _s;
 #endif
 
@@ -1150,7 +1150,7 @@ template <class DB> bytes GenericTrieDB<DB>::cleve(RLP const& _orig, unsigned _s
 
 template <class DB> bytes GenericTrieDB<DB>::graft(RLP const& _orig)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "graft " << _orig;
 #endif
 
@@ -1177,7 +1177,7 @@ template <class DB> bytes GenericTrieDB<DB>::graft(RLP const& _orig)
 
 template <class DB> bytes GenericTrieDB<DB>::merge(RLP const& _orig, byte _i)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "merge " << _orig << (int)_i;
 #endif
 
@@ -1196,7 +1196,7 @@ template <class DB> bytes GenericTrieDB<DB>::merge(RLP const& _orig, byte _i)
 
 template <class DB> bytes GenericTrieDB<DB>::branch(RLP const& _orig)
 {
-#if ETH_PARANOIA
+#if VAP_PARANOIA
 	tdebug << "branch " << _orig;
 #endif
 

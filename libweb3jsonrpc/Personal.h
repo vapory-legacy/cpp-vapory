@@ -4,7 +4,7 @@
 namespace dev
 {
 	
-namespace eth
+namespace vap
 {
 class KeyManager;
 class AccountHolder;
@@ -17,7 +17,7 @@ namespace rpc
 class Personal: public dev::rpc::PersonalFace
 {
 public:
-	Personal(dev::eth::KeyManager& _keyManager, dev::eth::AccountHolder& _accountHolder, eth::Interface& _eth);
+	Personal(dev::vap::KeyManager& _keyManager, dev::vap::AccountHolder& _accountHolder, vap::Interface& _vap);
 	virtual RPCModules implementedModules() const override
 	{
 		return RPCModules{RPCModule{"personal", "1.0"}};
@@ -29,9 +29,9 @@ public:
 	virtual Json::Value personal_listAccounts() override;
 
 private:
-	dev::eth::KeyManager& m_keyManager;
-	dev::eth::AccountHolder& m_accountHolder;
-	dev::eth::Interface& m_eth;
+	dev::vap::KeyManager& m_keyManager;
+	dev::vap::AccountHolder& m_accountHolder;
+	dev::vap::Interface& m_vap;
 };
 
 }

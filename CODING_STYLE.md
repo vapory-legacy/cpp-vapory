@@ -1,4 +1,4 @@
-# C++ Ethereum Coding Style
+# C++ Vapory Coding Style
 
 ## Code Formatting
 

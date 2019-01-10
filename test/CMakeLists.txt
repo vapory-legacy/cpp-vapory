@@ -27,9 +27,9 @@ foreach(file ${sources})
 				if (NOT ";${allSuites};" MATCHES ";${TestSuite};")
 					string(SUBSTRING ${TestSuitePath} 1 -1 TestSuitePathFixed)
 					list(APPEND allSuites ${TestSuite})
-					separate_arguments(TESTETH_ARGS)
-					set(TestEthArgs -t ${TestSuitePathFixed} -- ${TESTETH_ARGS})
-					add_test(NAME ${TestSuitePathFixed} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testeth ${TestEthArgs})
+					separate_arguments(TESTVAP_ARGS)
+					set(TestVapArgs -t ${TestSuitePathFixed} -- ${TESTVAP_ARGS})
+					add_test(NAME ${TestSuitePathFixed} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testvap ${TestVapArgs})
 				endif()
 			endif()
 		elseif(test MATCHES "^CASE .*")
@@ -37,9 +37,9 @@ foreach(file ${sources})
 				if(NOT test MATCHES "^CASE &createRandom.*")
 					string(SUBSTRING ${test} 5 -1 TestCase)
 					string(SUBSTRING ${TestSuitePath} 1 -1 TestSuitePathFixed)
-					separate_arguments(TESTETH_ARGS)
-					set(TestEthArgs -t ${TestSuitePathFixed}/${TestCase} -- ${TESTETH_ARGS})
-					add_test(NAME ${TestSuitePathFixed}/${TestCase} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testeth ${TestEthArgs})
+					separate_arguments(TESTVAP_ARGS)
+					set(TestVapArgs -t ${TestSuitePathFixed}/${TestCase} -- ${TESTVAP_ARGS})
+					add_test(NAME ${TestSuitePathFixed}/${TestCase} WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test COMMAND testvap ${TestVapArgs})
 				endif()
 			endif()
 		elseif (";${test_raw};" MATCHES "BOOST_AUTO_TEST_SUITE_END()")
@@ -53,26 +53,26 @@ endforeach(file)
 hunter_add_package(yaml-cpp)
 find_package(yaml-cpp CONFIG REQUIRED)
 
-add_executable(testeth ${sources})
-target_include_directories(testeth PRIVATE ${UTILS_INCLUDE_DIR})
-target_link_libraries(testeth PRIVATE ethereum ethashseal web3jsonrpc devcrypto devcore cryptopp-static yaml-cpp::yaml-cpp binaryen::binaryen)
+add_executable(testvap ${sources})
+target_include_directories(testvap PRIVATE ${UTILS_INCLUDE_DIR})
+target_link_libraries(testvap PRIVATE vapory vapashseal web3jsonrpc devcrypto devcore cryptopp-static yaml-cpp::yaml-cpp binaryen::binaryen)
 
 enable_testing()
 set(CTEST_OUTPUT_ON_FAILURE TRUE)
 
-include(EthUtils)
+include(VapUtils)
 
-eth_add_test(ClientBase
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=1
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=3
-	ARGS --eth_testfile=BlockTests/bcJS_API_Test --eth_threads=10
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=1
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=3
-	ARGS --eth_testfile=BlockTests/bcValidBlockTest --eth_threads=10
+vap_add_test(ClientBase
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=1
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=3
+	ARGS --vap_testfile=BlockTests/bcJS_API_Test --vap_threads=10
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=1
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=3
+	ARGS --vap_testfile=BlockTests/bcValidBlockTest --vap_threads=10
 )
 
 #Does not work
-#eth_add_test(JsonRpc
-#	ARGS --eth_testfile=BlockTests/bcJS_API_Test
-#	ARGS --eth_testfile=BlockTests/bcValidBlockTest
+#vap_add_test(JsonRpc
+#	ARGS --vap_testfile=BlockTests/bcJS_API_Test
+#	ARGS --vap_testfile=BlockTests/bcValidBlockTest
 #)

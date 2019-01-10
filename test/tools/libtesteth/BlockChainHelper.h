@@ -1,18 +1,18 @@
 /*
-    This file is part of cpp-ethereum.
+    This file is part of cpp-vapory.
 
-    cpp-ethereum is free software: you can redistribute it and/or modify
+    cpp-vapory is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    cpp-ethereum is distributed in the hope that it will be useful,
+    cpp-vapory is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+    along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  */
@@ -21,15 +21,15 @@
 #include "JsonSpiritHeaders.h"
 #include "TestOutputHelper.h"
 #include <libdevcore/TransientDirectory.h>
-#include <libethashseal/Ethash.h>
-#include <libethashseal/GenesisInfo.h>
-#include <libethereum/BlockChain.h>
-#include <libethereum/TransactionQueue.h>
+#include <libvapashseal/Vapash.h>
+#include <libvapashseal/GenesisInfo.h>
+#include <libvapory/BlockChain.h>
+#include <libvapory/TransactionQueue.h>
 
 using namespace std;
 using namespace json_spirit;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 
 
 namespace dev
@@ -151,7 +151,7 @@ public:
     static json_spirit::mObject defaultGenesisBlockJson();
     static TestBlock defaultGenesisBlock(u256 const& _gasLimit = DefaultBlockGasLimit);
     static AccountMap defaultAccountMap();
-    static eth::Network s_sealEngineNetwork;
+    static vap::Network s_sealEngineNetwork;
 
 private:
     std::unique_ptr<BlockChain> m_blockChain;
@@ -163,13 +163,13 @@ private:
 class NetworkSelector
 {
 public:
-    explicit NetworkSelector(eth::Network _network)
+    explicit NetworkSelector(vap::Network _network)
     {
         TestBlockChain::s_sealEngineNetwork = _network;
     }
     ~NetworkSelector()
     {
-        TestBlockChain::s_sealEngineNetwork = eth::Network::FrontierTest;
+        TestBlockChain::s_sealEngineNetwork = vap::Network::FrontierTest;
     }  // reset to default
 };
 

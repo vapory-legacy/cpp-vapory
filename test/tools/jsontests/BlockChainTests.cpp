@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file blockchain.cpp
  * @author Christoph Jentzsch <cj@ethdev.com>, Dimitry Khokhlov <dimitry@ethdev.com>
@@ -25,21 +25,21 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/filesystem.hpp>
 #include <libdevcore/FileSystem.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 #include <test/tools/fuzzTesting/fuzzHelper.h>
 #include <test/tools/jsontests/BlockChainTests.h>
 using namespace std;
 using namespace json_spirit;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 namespace fs = boost::filesystem;
 
 namespace dev {
 
 namespace test {
 
-eth::Network ChainBranch::s_tempBlockchainNetwork = eth::Network::MainNetwork;
-eth::Network TestBlockChain::s_sealEngineNetwork = eth::Network::FrontierTest;
+vap::Network ChainBranch::s_tempBlockchainNetwork = vap::Network::MainNetwork;
+vap::Network TestBlockChain::s_sealEngineNetwork = vap::Network::FrontierTest;
 json_spirit::mValue BlockchainTestSuite::doTests(json_spirit::mValue const& _input, bool _fillin) const
 {
 	json_spirit::mObject tests;
@@ -641,11 +641,11 @@ void overwriteBlockHeaderForTest(mObject const& _blObj, TestBlock& _block, Chain
 		{
 			BlockHeader parentHeader = importedBlocks.at(importedBlocks.size() - 1).blockHeader();
 			tmp.setTimestamp(toInt(ho["RelTimestamp"]) + parentHeader.timestamp());
-			tmp.setDifficulty(((const Ethash*)sealEngine)->calculateDifficulty(tmp, parentHeader));
+			tmp.setDifficulty(((const Vapash*)sealEngine)->calculateDifficulty(tmp, parentHeader));
 		}
 
-		Ethash::setMixHash(tmp, ho.count("mixHash") ? h256(ho["mixHash"].get_str()) : Ethash::mixHash(header));
-		Ethash::setNonce(tmp, ho.count("nonce") ? eth::Nonce(ho["nonce"].get_str()) : Ethash::nonce(header));
+		Vapash::setMixHash(tmp, ho.count("mixHash") ? h256(ho["mixHash"].get_str()) : Vapash::mixHash(header));
+		Vapash::setNonce(tmp, ho.count("nonce") ? vap::Nonce(ho["nonce"].get_str()) : Vapash::nonce(header));
 		tmp.noteDirty();
 	}
 	else
@@ -755,7 +755,7 @@ void overwriteUncleHeaderForTest(mObject& uncleHeaderObj, TestBlock& uncle, std:
 			{
 				BlockHeader parentHeader = importedBlocks.at(number).blockHeader();
 				uncleHeader.setTimestamp(toInt(uncleHeaderObj["RelTimestamp"]) + parentHeader.timestamp());
-				uncleHeader.setDifficulty(((const Ethash*)sealEngine)->calculateDifficulty(uncleHeader, parentHeader));
+				uncleHeader.setDifficulty(((const Vapash*)sealEngine)->calculateDifficulty(uncleHeader, parentHeader));
 				uncleHeaderObj.erase("RelTimestamp");
 			}
 		}
@@ -779,7 +779,7 @@ void overwriteUncleHeaderForTest(mObject& uncleHeaderObj, TestBlock& uncle, std:
 			uncleHeader.receiptsRoot(),
 			uncleHeader.logBloom(),
 			overwrite == "difficulty" ? toInt(uncleHeaderObj.at("difficulty"))
-									  :	overwrite == "timestamp" ? ((const Ethash*)sealEngine)->calculateDifficulty(uncleHeader, importedBlocks.at((size_t)uncleHeader.number() - 1).blockHeader())
+									  :	overwrite == "timestamp" ? ((const Vapash*)sealEngine)->calculateDifficulty(uncleHeader, importedBlocks.at((size_t)uncleHeader.number() - 1).blockHeader())
 																 : uncleHeader.difficulty(),
 			overwrite == "number" ? toInt(uncleHeaderObj.at("number")) : uncleHeader.number(),
 			overwrite == "gasLimit" ? toInt(uncleHeaderObj.at("gasLimit")) : uncleHeader.gasLimit(),
@@ -794,9 +794,9 @@ void overwriteUncleHeaderForTest(mObject& uncleHeaderObj, TestBlock& uncle, std:
 	if (overwrite == "nonce" || overwrite == "mixHash")
 	{
 		if (overwrite == "nonce")
-			Ethash::setNonce(uncleHeader, eth::Nonce(uncleHeaderObj["nonce"].get_str()));
+			Vapash::setNonce(uncleHeader, vap::Nonce(uncleHeaderObj["nonce"].get_str()));
 		if (overwrite == "mixHash")
-			Ethash::setMixHash(uncleHeader, h256(uncleHeaderObj["mixHash"].get_str()));
+			Vapash::setMixHash(uncleHeader, h256(uncleHeaderObj["mixHash"].get_str()));
 
 		uncle.setBlockHeader(uncleHeader);
 	}
@@ -845,8 +845,8 @@ mObject writeBlockHeaderToJson(BlockHeader const& _bi)
 	o["gasUsed"] = toCompactHexPrefixed(_bi.gasUsed(), 1);
 	o["timestamp"] = toCompactHexPrefixed(_bi.timestamp(), 1);
 	o["extraData"] = (_bi.extraData().size()) ? toHexPrefixed(_bi.extraData()) : "";
-	o["mixHash"] = toString(Ethash::mixHash(_bi));
-	o["nonce"] = toString(Ethash::nonce(_bi));
+	o["mixHash"] = toString(Vapash::mixHash(_bi));
+	o["nonce"] = toString(Vapash::nonce(_bi));
 	o["hash"] = toString(_bi.hash());
 	o = ImportTest::makeAllFieldsHex(o, true);
 	return o;
@@ -916,8 +916,8 @@ void checkBlocks(TestBlock const& _blockFromFields, TestBlock const& _blockFromR
 	BOOST_CHECK_MESSAGE(blockHeaderFromFields.gasUsed() == blockFromRlp.gasUsed(), _testname + "gasUsed in given RLP not matching the block gasUsed!");
 	BOOST_CHECK_MESSAGE(blockHeaderFromFields.timestamp() == blockFromRlp.timestamp(), _testname + "timestamp in given RLP not matching the block timestamp!");
 	BOOST_CHECK_MESSAGE(blockHeaderFromFields.extraData() == blockFromRlp.extraData(), _testname + "extraData in given RLP not matching the block extraData!");
-	//BOOST_CHECK_MESSAGE(Ethash::mixHash(blockHeaderFromFields) == Ethash::mixHash(blockFromRlp), _testname + "mixHash in given RLP not matching the block mixHash!");
-	//BOOST_CHECK_MESSAGE(Ethash::nonce(blockHeaderFromFields) == Ethash::nonce(blockFromRlp), _testname + "nonce in given RLP not matching the block nonce!");
+	//BOOST_CHECK_MESSAGE(Vapash::mixHash(blockHeaderFromFields) == Vapash::mixHash(blockFromRlp), _testname + "mixHash in given RLP not matching the block mixHash!");
+	//BOOST_CHECK_MESSAGE(Vapash::nonce(blockHeaderFromFields) == Vapash::nonce(blockFromRlp), _testname + "nonce in given RLP not matching the block nonce!");
 
 	BOOST_CHECK_MESSAGE(blockHeaderFromFields == blockFromRlp, _testname + "However, blockHeaderFromFields != blockFromRlp!");
 

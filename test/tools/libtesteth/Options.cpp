@@ -1,32 +1,32 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
- * Class for handling testeth custom options
+ * Class for handling testvap custom options
  */
 
-#include <libevm/VMFactory.h>
+#include <libvvm/VMFactory.h>
 #include <libweb3jsonrpc/Debug.h>
-#include <test/tools/libtesteth/Options.h>
+#include <test/tools/libtestvap/Options.h>
 #include <test/tools/fuzzTesting/fuzzHelper.h>
 #include <boost/program_options.hpp>
 
 using namespace std;
 using namespace dev::test;
-using namespace dev::eth;
+using namespace dev::vap;
 
 void printHelp()
 {
@@ -57,7 +57,7 @@ void printHelp()
 	cout << "\nTest Generation\n";
 	cout << setw(30) << "--filltests" << setw(25) << "Run test fillers\n";
 	cout << setw(30) << "--fillchain" << setw(25) << "When filling the state tests, fill tests as blockchain instead\n";
-	cout << setw(30) << "--randomcode <MaxOpcodeNum>" << setw(25) << "Generate smart random EVM code\n";
+	cout << setw(30) << "--randomcode <MaxOpcodeNum>" << setw(25) << "Generate smart random VVM code\n";
 	cout << setw(30) << "--createRandomTest" << setw(25) << "Create random test and output it to the console\n";
 	cout << setw(30) << "--createRandomTest <PathToOptions.json>" << setw(25) << "Use following options file for random code generation\n";
 	cout << setw(30) << "--seed <uint>" << setw(25) << "Define a seed for random test\n";
@@ -130,7 +130,7 @@ Options::Options(int argc, const char** argv)
 			printVersion();
 			exit(0);
 		}
-		else if (arg == "--vm" || arg == "--evmc")
+		else if (arg == "--vm" || arg == "--vvmc")
 		{
 			// Skip VM options because they are handled by vmProgramOptions().
 			throwIfNoArgumentFollows();
@@ -138,7 +138,7 @@ Options::Options(int argc, const char** argv)
 		}
 		else if (arg == "--vmtrace")
 		{
-#if ETH_VMTRACE
+#if VAP_VMTRACE
 			vmtrace = true;
 			g_logVerbosity = 13;
 #else

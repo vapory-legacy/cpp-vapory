@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 files=(
-  cmake/EthCcache.cmake
-  cmake/EthCheckCXXCompilerFlag.cmake
-  cmake/EthCompilerSettings.cmake
+  cmake/VapCcache.cmake
+  cmake/VapCheckCXXCompilerFlag.cmake
+  cmake/VapCompilerSettings.cmake
 )
 
 project_root=$(readlink -f "$(dirname $0)/..")

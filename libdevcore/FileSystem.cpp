@@ -1,18 +1,18 @@
 /*
-        This file is part of cpp-ethereum.
+        This file is part of cpp-vapory.
 
-        cpp-ethereum is free software: you can redistribute it and/or modify
+        cpp-vapory is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
         the Free Software Foundation, either version 3 of the License, or
         (at your option) any later version.
 
-        cpp-ethereum is distributed in the hope that it will be useful,
+        cpp-vapory is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
         GNU General Public License for more details.
 
         You should have received a copy of the GNU General Public License
-        along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+        along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file FileSystem.cpp
  * @authors
@@ -42,41 +42,41 @@ namespace fs = boost::filesystem;
 static_assert(BOOST_VERSION >= 106400, "Wrong boost headers version");
 
 // Should be written to only once during startup
-static fs::path s_ethereumDatadir;
-static fs::path s_ethereumIpcPath;
+static fs::path s_vaporyDatadir;
+static fs::path s_vaporyIpcPath;
 
 void dev::setDataDir(fs::path const& _dataDir)
 {
-	s_ethereumDatadir = _dataDir;
+	s_vaporyDatadir = _dataDir;
 }
 
 void dev::setIpcPath(fs::path const& _ipcDir)
 {
-	s_ethereumIpcPath = _ipcDir;
+	s_vaporyIpcPath = _ipcDir;
 }
 
 fs::path dev::getIpcPath()
 {
-	// Strip "geth.ipc" suffix if provided.
-	if (s_ethereumIpcPath.filename() == "geth.ipc")
-		return s_ethereumIpcPath.parent_path();
+	// Strip "gvap.ipc" suffix if provided.
+	if (s_vaporyIpcPath.filename() == "gvap.ipc")
+		return s_vaporyIpcPath.parent_path();
 	else
-		return s_ethereumIpcPath;
+		return s_vaporyIpcPath;
 }
 
 fs::path dev::getDataDir(string _prefix)
 {
 	if (_prefix.empty())
-		_prefix = "ethereum";
-	if (_prefix == "ethereum" && !s_ethereumDatadir.empty())
-		return s_ethereumDatadir;
+		_prefix = "vapory";
+	if (_prefix == "vapory" && !s_vaporyDatadir.empty())
+		return s_vaporyDatadir;
 	return getDefaultDataDir(_prefix);
 }
 
 fs::path dev::getDefaultDataDir(string _prefix)
 {
 	if (_prefix.empty())
-		_prefix = "ethereum";
+		_prefix = "vapory";
 
 #if defined(_WIN32)
 	_prefix[0] = toupper(_prefix[0]);

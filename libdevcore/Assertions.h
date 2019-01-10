@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
  * @file Assertions.h
@@ -31,15 +31,15 @@ namespace dev
 {
 
 #if defined(_MSC_VER)
-#define ETH_FUNC __FUNCSIG__
+#define VAP_FUNC __FUNCSIG__
 #elif defined(__GNUC__)
-#define ETH_FUNC __PRETTY_FUNCTION__
+#define VAP_FUNC __PRETTY_FUNCTION__
 #else
-#define ETH_FUNC __func__
+#define VAP_FUNC __func__
 #endif
 
-#define asserts(A) ::dev::assertAux(A, #A, __LINE__, __FILE__, ETH_FUNC)
-#define assertsEqual(A, B) ::dev::assertEqualAux(A, B, #A, #B, __LINE__, __FILE__, ETH_FUNC)
+#define asserts(A) ::dev::assertAux(A, #A, __LINE__, __FILE__, VAP_FUNC)
+#define assertsEqual(A, B) ::dev::assertEqualAux(A, B, #A, #B, __LINE__, __FILE__, VAP_FUNC)
 
 inline bool assertAux(bool _a, char const* _aStr, unsigned _line, char const* _file, char const* _func)
 {
@@ -64,7 +64,7 @@ inline bool assertEqualAux(A const& _a, B const& _b, char const* _aStr, char con
 /// Use it as assertThrow(1 == 1, ExceptionType, "Mathematics is wrong.");
 /// Do NOT supply an exception object as the second parameter.
 #define assertThrow(_condition, _ExceptionType, _description) \
-	::dev::assertThrowAux<_ExceptionType>(_condition, _description, __LINE__, __FILE__, ETH_FUNC)
+	::dev::assertThrowAux<_ExceptionType>(_condition, _description, __LINE__, __FILE__, VAP_FUNC)
 
 using errinfo_comment = boost::error_info<struct tag_comment, std::string>;
 

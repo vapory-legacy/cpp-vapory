@@ -225,10 +225,10 @@ def run():
     )
 
     if sys.platform == 'win32':
-        default_backend_path = r'\\.\pipe\geth.ipc'
+        default_backend_path = r'\\.\pipe\gvap.ipc'
         backend_path_help = "Named Pipe of a backend RPC server"
     else:
-        default_backend_path = '~/.ethereum/geth.ipc'
+        default_backend_path = '~/.vapory/gvap.ipc'
         backend_path_help = "Unix Socket of a backend RPC server"
 
     parser.add_argument('backend_path', nargs='?',

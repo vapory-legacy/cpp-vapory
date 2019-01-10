@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file WebThree.h
  * @author Gav Wood <i@gavwood.com>
@@ -32,8 +32,8 @@
 #include <libdevcore/Guards.h>
 #include <libdevcore/Exceptions.h>
 #include <libp2p/Host.h>
-#include <libethereum/Client.h>
-#include <libethereum/ChainParams.h>
+#include <libvapory/Client.h>
+#include <libvapory/ChainParams.h>
 
 namespace dev
 {
@@ -45,7 +45,7 @@ enum WorkState
 	Deleted
 };
 
-namespace eth { class Interface; }
+namespace vap { class Interface; }
 namespace shh { class Interface; }
 namespace bzz { class Interface; class Client; }
 
@@ -119,13 +119,13 @@ class WebThreeDirect: public NetworkFace
 {
 public:
 	/// Constructor for private instance. If there is already another process on the machine using @a _dbPath, then this will throw an exception.
-	/// ethereum() may be safely static_cast()ed to a eth::Client*.
+	/// vapory() may be safely static_cast()ed to a vap::Client*.
 	WebThreeDirect(
 		std::string const& _clientVersion,
 		boost::filesystem::path const& _dbPath,
-		eth::ChainParams const& _params,
+		vap::ChainParams const& _params,
 		WithExisting _we = WithExisting::Trust,
-		std::set<std::string> const& _interfaces = {"eth", "shh", "bzz"},
+		std::set<std::string> const& _interfaces = {"vap", "shh", "bzz"},
 		p2p::NetworkPreferences const& _n = p2p::NetworkPreferences(),
 		bytesConstRef _network = bytesConstRef(),
 		bool _testing = false
@@ -136,7 +136,7 @@ public:
 
 	// The mainline interfaces:
 
-	eth::Client* ethereum() const { if (!m_ethereum) BOOST_THROW_EXCEPTION(InterfaceNotSupported("eth")); return m_ethereum.get(); }
+	vap::Client* vapory() const { if (!m_vapory) BOOST_THROW_EXCEPTION(InterfaceNotSupported("vap")); return m_vapory.get(); }
 
 	// Misc stuff:
 
@@ -191,7 +191,7 @@ public:
 
 	p2p::NodeID id() const override { return m_net.id(); }
 
-	u256 networkId() const override { return m_ethereum.get()->networkId(); }
+	u256 networkId() const override { return m_vapory.get()->networkId(); }
 
 	std::string enode() const override { return m_net.enode(); }
 
@@ -212,7 +212,7 @@ private:
 
 	p2p::Host m_net;								///< Should run in background and send us events when blocks found and allow us to send blocks as required.
 
-	std::unique_ptr<eth::Client> m_ethereum;		///< Client for Ethereum ("eth") protocol.
+	std::unique_ptr<vap::Client> m_vapory;		///< Client for Vapory ("vap") protocol.
 };
 
 

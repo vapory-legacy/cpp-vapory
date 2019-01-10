@@ -1,18 +1,18 @@
 /*
-    This file is part of cpp-ethereum.
+    This file is part of cpp-vapory.
 
-    cpp-ethereum is free software: you can redistribute it and/or modify
+    cpp-vapory is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    cpp-ethereum is distributed in the hope that it will be useful,
+    cpp-vapory is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+    along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  * Incapsulation of libetehreum blockchain logic into test classes
@@ -20,17 +20,17 @@
  */
 
 #include <libdevcore/TransientDirectory.h>
-#include <libethashseal/GenesisInfo.h>
-#include <libethereum/Block.h>
-#include <libethereum/BlockChain.h>
-#include <libethereum/GenesisInfo.h>
-#include <libethereum/TransactionQueue.h>
-#include <test/tools/libtesteth/BlockChainHelper.h>
-#include <test/tools/libtesteth/TestHelper.h>
+#include <libvapashseal/GenesisInfo.h>
+#include <libvapory/Block.h>
+#include <libvapory/BlockChain.h>
+#include <libvapory/GenesisInfo.h>
+#include <libvapory/TransactionQueue.h>
+#include <test/tools/libtestvap/BlockChainHelper.h>
+#include <test/tools/libtestvap/TestHelper.h>
 using namespace std;
 using namespace json_spirit;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 
 namespace dev
 {
@@ -205,7 +205,7 @@ void TestBlock::mine(TestBlockChain const& _bc)
         // if (transactionsOnImport >  m_transactionQueue.topTransactions(1000).size())
         // BOOST_ERROR(TestOutputHelper::get().testName() + " Dropped invalid Transactions before
         // mining!");
-        dev::eth::mine(block, blockchain, blockchain.sealEngine());
+        dev::vap::mine(block, blockchain, blockchain.sealEngine());
         blockchain.sealEngine()->verify(JustSeal, block.info());
         if (transactionsOnImport > block.pending().size())
             cnote << TestOutputHelper::get().testName() +
@@ -363,7 +363,7 @@ void TestBlock::updateNonce(TestBlockChain const& _bc)
     else
     {
         // do not verify blockheader for validity here
-        dev::eth::mine(m_blockHeader, _bc.getInterface().sealEngine(), false);
+        dev::vap::mine(m_blockHeader, _bc.getInterface().sealEngine(), false);
     }
 
     recalcBlockHeaderBytes();

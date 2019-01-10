@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  * Helper functions to work with json::spirit and test files
@@ -28,21 +28,21 @@
 #include <boost/filesystem.hpp>
 #include <boost/progress.hpp>
 
-#include <libethashseal/Ethash.h>
-#include <libethereum/State.h>
-#include <libethashseal/GenesisInfo.h>
+#include <libvapashseal/Vapash.h>
+#include <libvapory/State.h>
+#include <libvapashseal/GenesisInfo.h>
 #include <test/tools/libtestutils/Common.h>
 
-#include <test/tools/libtesteth/JsonSpiritHeaders.h>
-#include <test/tools/libtesteth/Options.h>
-#include <test/tools/libtesteth/ImportTest.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
-#include <test/tools/libtesteth/TestSuite.h>
+#include <test/tools/libtestvap/JsonSpiritHeaders.h>
+#include <test/tools/libtestvap/Options.h>
+#include <test/tools/libtestvap/ImportTest.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
+#include <test/tools/libtestvap/TestSuite.h>
 
 namespace dev
 {
 
-namespace eth
+namespace vap
 {
 
 class Client;
@@ -62,21 +62,21 @@ struct MissingFields : virtual Exception {};
 bigint const c_max256plus1 = bigint(1) << 256;
 typedef json_spirit::Value_type jsonVType;
 
-class ZeroGasPricer: public eth::GasPricer
+class ZeroGasPricer: public vap::GasPricer
 {
 protected:
-	u256 ask(eth::Block const&) const override { return 0; }
-	u256 bid(eth::TransactionPriority = eth::TransactionPriority::Medium) const override { return 0; }
+	u256 ask(vap::Block const&) const override { return 0; }
+	u256 bid(vap::TransactionPriority = vap::TransactionPriority::Medium) const override { return 0; }
 };
 
 // helping functions
 std::string prepareVersionString();
 std::string prepareLLLCVersionString();
 std::vector<boost::filesystem::path> getFiles(boost::filesystem::path const& _dirPath, std::set<std::string> _extentionMask, std::string const& _particularFile = {});
-std::string netIdToString(eth::Network _netId);
-eth::Network stringToNetId(std::string const& _netname);
-bool isDisabledNetwork(eth::Network _net);
-std::vector<eth::Network> const& getNetworks();
+std::string netIdToString(vap::Network _netId);
+vap::Network stringToNetId(std::string const& _netname);
+bool isDisabledNetwork(vap::Network _net);
+std::vector<vap::Network> const& getNetworks();
 u256 toInt(json_spirit::mValue const& _v);
 byte toByte(json_spirit::mValue const& _v);
 bytes processDataOrCode(json_spirit::mObject const& _o, std::string const& nodeName);
@@ -92,38 +92,38 @@ void requireJsonFields(json_spirit::mObject const& _o, std::string const& _secti
     std::map<std::string, json_spirit::Value_type> const& _validationMap);
 void checkHexHasEvenLength(std::string const&);
 void copyFile(boost::filesystem::path const& _source, boost::filesystem::path const& _destination);
-eth::LogEntries importLog(json_spirit::mArray const& _o);
-std::string exportLog(eth::LogEntries const& _logs);
+vap::LogEntries importLog(json_spirit::mArray const& _o);
+std::string exportLog(vap::LogEntries const& _logs);
 void checkOutput(bytesConstRef _output, json_spirit::mObject const& _o);
 void checkStorage(std::map<u256, u256> _expectedStore, std::map<u256, u256> _resultStore, Address _expectedAddr);
-void checkCallCreates(eth::Transactions const& _resultCallCreates, eth::Transactions const& _expectedCallCreates);
-dev::eth::BlockHeader constructHeader(
+void checkCallCreates(vap::Transactions const& _resultCallCreates, vap::Transactions const& _expectedCallCreates);
+dev::vap::BlockHeader constructHeader(
 	h256 const& _parentHash,
 	h256 const& _sha3Uncles,
 	Address const& _author,
 	h256 const& _stateRoot,
 	h256 const& _transactionsRoot,
 	h256 const& _receiptsRoot,
-	dev::eth::LogBloom const& _logBloom,
+	dev::vap::LogBloom const& _logBloom,
 	u256 const& _difficulty,
 	u256 const& _number,
 	u256 const& _gasLimit,
 	u256 const& _gasUsed,
 	u256 const& _timestamp,
 	bytes const& _extraData);
-void updateEthashSeal(dev::eth::BlockHeader& _header, h256 const& _mixHash, dev::eth::Nonce const& _nonce);
+void updateVapashSeal(dev::vap::BlockHeader& _header, h256 const& _mixHash, dev::vap::Nonce const& _nonce);
 RLPStream createRLPStreamFromTransactionFields(json_spirit::mObject const& _tObj);
-json_spirit::mObject fillJsonWithStateChange(eth::State const& _stateOrig, eth::State const& _statePost, eth::ChangeLog const& _changeLog);
-json_spirit::mObject fillJsonWithState(eth::State const& _state);
-json_spirit::mObject fillJsonWithState(eth::State const& _state, eth::AccountMaskMap const& _map);
-json_spirit::mObject fillJsonWithTransaction(eth::Transaction const& _txn);
+json_spirit::mObject fillJsonWithStateChange(vap::State const& _stateOrig, vap::State const& _statePost, vap::ChangeLog const& _changeLog);
+json_spirit::mObject fillJsonWithState(vap::State const& _state);
+json_spirit::mObject fillJsonWithState(vap::State const& _state, vap::AccountMaskMap const& _map);
+json_spirit::mObject fillJsonWithTransaction(vap::Transaction const& _txn);
 
 //Fill Test Functions
 bool createRandomTest();	//returns true if succeed, false if there was an error;
 void doRlpTests(json_spirit::mValue const& _input);
 
 /// Allows observing test execution process.
-/// This class also provides methods for registering and notifying the listener
+/// This class also provides mvapods for registering and notifying the listener
 class Listener
 {
 public:

@@ -1,18 +1,18 @@
 /*
-        This file is part of cpp-ethereum.
+        This file is part of cpp-vapory.
 
-        cpp-ethereum is free software: you can redistribute it and/or modify
+        cpp-vapory is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
         the Free Software Foundation, either version 3 of the License, or
         (at your option) any later version.
 
-        cpp-ethereum is distributed in the hope that it will be useful,
+        cpp-vapory is distributed in the hope that it will be useful,
         but WITHOUT ANY WARRANTY; without even the implied warranty of
         MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
         GNU General Public License for more details.
 
         You should have received a copy of the GNU General Public License
-        along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+        along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  * Helper functions to work with json::spirit and test files
@@ -24,8 +24,8 @@
 #include "wast2wasm.h"
 
 #include <BuildInfo.h>
-#include <libethashseal/EthashCPUMiner.h>
-#include <libethereum/Client.h>
+#include <libvapashseal/VapashCPUMiner.h>
+#include <libvapory/Client.h>
 
 #include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string/trim.hpp>
@@ -34,12 +34,12 @@
 #include <string>
 
 using namespace std;
-using namespace dev::eth;
+using namespace dev::vap;
 namespace fs = boost::filesystem;
 
 namespace dev
 {
-namespace eth
+namespace vap
 {
 
 void mine(Client& c, int numBlocks)
@@ -56,7 +56,7 @@ void connectClients(Client& c1, Client& c2)
 {
     (void)c1;
     (void)c2;
-// TODO: Move to WebThree. eth::Client no longer handles networking.
+// TODO: Move to WebThree. vap::Client no longer handles networking.
 #if 0
 	short c1Port = 20000;
 	short c2Port = 21000;
@@ -68,7 +68,7 @@ void connectClients(Client& c1, Client& c2)
 
 void mine(Block& s, BlockChain const& _bc, SealEngineFace* _sealer)
 {
-    EthashCPUMiner::setNumInstances(1);
+    VapashCPUMiner::setNumInstances(1);
     s.commitToSeal(_bc, s.info().extraData());
     Notified<bytes> sealed;
     _sealer->onSealGenerated([&](bytes const& sealedHeader) { sealed = sealedHeader; });
@@ -86,8 +86,8 @@ void mine(BlockHeader& _bi, SealEngineFace* _sealer, bool _verify)
     sealed.waitNot({});
     _sealer->onSealGenerated([](bytes const&) {});
     _bi = BlockHeader(sealed, HeaderData);
-    //	cdebug << "Block mined" << Ethash::boundary(_bi).hex() <<
-    // Ethash::nonce(_bi) << _bi.hash(WithoutSeal).hex();
+    //	cdebug << "Block mined" << Vapash::boundary(_bi).hex() <<
+    // Vapash::nonce(_bi) << _bi.hash(WithoutSeal).hex();
     if (_verify)  // sometimes it is needed to mine incorrect blockheaders for
                   // testing
         _sealer->verify(JustSeal, _bi);
@@ -98,31 +98,31 @@ void mine(BlockHeader& _bi, SealEngineFace* _sealer, bool _verify)
 namespace test
 {
 
-string netIdToString(eth::Network _netId)
+string netIdToString(vap::Network _netId)
 {
     switch (_netId)
     {
-    case eth::Network::FrontierTest:
+    case vap::Network::FrontierTest:
         return "Frontier";
-    case eth::Network::HomesteadTest:
+    case vap::Network::HomesteadTest:
         return "Homestead";
-    case eth::Network::EIP150Test:
+    case vap::Network::EIP150Test:
         return "EIP150";
-    case eth::Network::EIP158Test:
+    case vap::Network::EIP158Test:
         return "EIP158";
-    case eth::Network::ByzantiumTest:
+    case vap::Network::ByzantiumTest:
         return "Byzantium";
-    case eth::Network::ConstantinopleTest:
+    case vap::Network::ConstantinopleTest:
         return "Constantinople";
-    case eth::Network::FrontierToHomesteadAt5:
+    case vap::Network::FrontierToHomesteadAt5:
         return "FrontierToHomesteadAt5";
-    case eth::Network::HomesteadToDaoAt5:
+    case vap::Network::HomesteadToDaoAt5:
         return "HomesteadToDaoAt5";
-    case eth::Network::HomesteadToEIP150At5:
+    case vap::Network::HomesteadToEIP150At5:
         return "HomesteadToEIP150At5";
-    case eth::Network::EIP158ToByzantiumAt5:
+    case vap::Network::EIP158ToByzantiumAt5:
         return "EIP158ToByzantiumAt5";
-    case eth::Network::TransitionnetTest:
+    case vap::Network::TransitionnetTest:
         return "TransitionNet";
     default:
         return "other";
@@ -130,41 +130,41 @@ string netIdToString(eth::Network _netId)
     return "unknown";
 }
 
-eth::Network stringToNetId(string const& _netname)
+vap::Network stringToNetId(string const& _netname)
 {
     // Networks that used in .json tests
-    static vector<eth::Network> const networks{
-        {eth::Network::FrontierTest, eth::Network::HomesteadTest, eth::Network::EIP150Test,
-            eth::Network::EIP158Test, eth::Network::ByzantiumTest, eth::Network::ConstantinopleTest,
-            eth::Network::FrontierToHomesteadAt5, eth::Network::HomesteadToDaoAt5,
-            eth::Network::HomesteadToEIP150At5, eth::Network::EIP158ToByzantiumAt5,
-            eth::Network::TransitionnetTest}};
+    static vector<vap::Network> const networks{
+        {vap::Network::FrontierTest, vap::Network::HomesteadTest, vap::Network::EIP150Test,
+            vap::Network::EIP158Test, vap::Network::ByzantiumTest, vap::Network::ConstantinopleTest,
+            vap::Network::FrontierToHomesteadAt5, vap::Network::HomesteadToDaoAt5,
+            vap::Network::HomesteadToEIP150At5, vap::Network::EIP158ToByzantiumAt5,
+            vap::Network::TransitionnetTest}};
 
     for (auto const& net : networks)
         if (netIdToString(net) == _netname)
             return net;
 
     BOOST_ERROR(TestOutputHelper::get().testName() + " network not found: " + _netname);
-    return eth::Network::FrontierTest;
+    return vap::Network::FrontierTest;
 }
 
-bool isDisabledNetwork(eth::Network _net)
+bool isDisabledNetwork(vap::Network _net)
 {
     Options const& opt = Options::get();
     if (opt.all || opt.filltests || opt.createRandomTest || !opt.singleTestNet.empty())
     {
-        if (_net == eth::Network::ConstantinopleTest)
+        if (_net == vap::Network::ConstantinopleTest)
             return true;
         return false;
     }
     switch (_net)
     {
-    case eth::Network::FrontierTest:
-    case eth::Network::HomesteadTest:
-    case eth::Network::ConstantinopleTest:
-    case eth::Network::FrontierToHomesteadAt5:
-    case eth::Network::HomesteadToDaoAt5:
-    case eth::Network::HomesteadToEIP150At5:
+    case vap::Network::FrontierTest:
+    case vap::Network::HomesteadTest:
+    case vap::Network::ConstantinopleTest:
+    case vap::Network::FrontierToHomesteadAt5:
+    case vap::Network::HomesteadToDaoAt5:
+    case vap::Network::HomesteadToEIP150At5:
         return true;
     default:
         break;
@@ -172,16 +172,16 @@ bool isDisabledNetwork(eth::Network _net)
     return false;
 }
 
-vector<eth::Network> const& getNetworks()
+vector<vap::Network> const& getNetworks()
 {
     // Networks for the test case execution when filling the tests
-    static vector<eth::Network> const networks{{eth::Network::FrontierTest,
-        eth::Network::HomesteadTest, eth::Network::EIP150Test, eth::Network::EIP158Test,
-        eth::Network::ByzantiumTest, eth::Network::ConstantinopleTest}};
+    static vector<vap::Network> const networks{{vap::Network::FrontierTest,
+        vap::Network::HomesteadTest, vap::Network::EIP150Test, vap::Network::EIP158Test,
+        vap::Network::ByzantiumTest, vap::Network::ConstantinopleTest}};
     return networks;
 }
 
-string exportLog(eth::LogEntries const& _logs)
+string exportLog(vap::LogEntries const& _logs)
 {
     RLPStream s;
     s.appendList(_logs.size());
@@ -478,7 +478,7 @@ void checkStorage(map<u256, u256> const& _expectedStore, map<u256, u256> const& 
 }
 
 void checkCallCreates(
-    eth::Transactions const& _resultCallCreates, eth::Transactions const& _expectedCallCreates)
+    vap::Transactions const& _resultCallCreates, vap::Transactions const& _expectedCallCreates)
 {
     BOOST_REQUIRE_EQUAL(_resultCallCreates.size(), _expectedCallCreates.size());
 
@@ -537,11 +537,11 @@ void requireJsonFields(json_spirit::mObject const& _o, string const& _section,
 string prepareVersionString()
 {
     // cpp-1.3.0+commit.6be76b64.Linux.g++
-    string commit(DEV_QUOTED(ETH_COMMIT_HASH));
-    string version = "cpp-" + string(ETH_PROJECT_VERSION);
+    string commit(DEV_QUOTED(VAP_COMMIT_HASH));
+    string version = "cpp-" + string(VAP_PROJECT_VERSION);
     version += "+commit." + commit.substr(0, 8);
     version +=
-        "." + string(DEV_QUOTED(ETH_BUILD_OS)) + "." + string(DEV_QUOTED(ETH_BUILD_COMPILER));
+        "." + string(DEV_QUOTED(VAP_BUILD_OS)) + "." + string(DEV_QUOTED(VAP_BUILD_COMPILER));
     return version;
 }
 
@@ -605,9 +605,9 @@ RLPStream createRLPStreamFromTransactionFields(json_spirit::mObject const& _tObj
     return rlpStream;
 }
 
-dev::eth::BlockHeader constructHeader(h256 const& _parentHash, h256 const& _sha3Uncles,
+dev::vap::BlockHeader constructHeader(h256 const& _parentHash, h256 const& _sha3Uncles,
     Address const& _author, h256 const& _stateRoot, h256 const& _transactionsRoot,
-    h256 const& _receiptsRoot, dev::eth::LogBloom const& _logBloom, u256 const& _difficulty,
+    h256 const& _receiptsRoot, dev::vap::LogBloom const& _logBloom, u256 const& _difficulty,
     u256 const& _number, u256 const& _gasLimit, u256 const& _gasUsed, u256 const& _timestamp,
     bytes const& _extraData)
 {
@@ -616,15 +616,15 @@ dev::eth::BlockHeader constructHeader(h256 const& _parentHash, h256 const& _sha3
 
     rlpStream << _parentHash << _sha3Uncles << _author << _stateRoot << _transactionsRoot
               << _receiptsRoot << _logBloom << _difficulty << _number << _gasLimit << _gasUsed
-              << _timestamp << _extraData << h256{} << eth::Nonce{};
+              << _timestamp << _extraData << h256{} << vap::Nonce{};
 
     return BlockHeader(rlpStream.out(), HeaderData);
 }
 
-void updateEthashSeal(dev::eth::BlockHeader& _header, h256 const& _mixHash, h64 const& _nonce)
+void updateVapashSeal(dev::vap::BlockHeader& _header, h256 const& _mixHash, h64 const& _nonce)
 {
-    Ethash::setNonce(_header, _nonce);
-    Ethash::setMixHash(_header, _mixHash);
+    Vapash::setNonce(_header, _nonce);
+    Vapash::setMixHash(_header, _mixHash);
 }
 
 namespace

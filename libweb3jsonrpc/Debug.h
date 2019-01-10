@@ -1,11 +1,11 @@
 #pragma once
-#include <libethereum/Executive.h>
+#include <libvapory/Executive.h>
 #include "DebugFace.h"
 
 namespace dev
 {
 
-namespace eth
+namespace vap
 {
 class Client;
 
@@ -20,7 +20,7 @@ class SessionManager;
 class Debug: public DebugFace
 {
 public:
-	explicit Debug(eth::Client const& _eth);
+	explicit Debug(vap::Client const& _vap);
 
 	virtual RPCModules implementedModules() const override
 	{
@@ -38,10 +38,10 @@ public:
 
 private:
 
-	eth::Client const& m_eth;
+	vap::Client const& m_vap;
 	h256 blockHash(std::string const& _blockHashOrNumber) const;
-	Json::Value traceTransaction(dev::eth::Executive& _e, dev::eth::Transaction const& _t, Json::Value const& _json);
-	Json::Value traceBlock(dev::eth::Block const& _block, Json::Value const& _json);
+	Json::Value traceTransaction(dev::vap::Executive& _e, dev::vap::Transaction const& _t, Json::Value const& _json);
+	Json::Value traceBlock(dev::vap::Block const& _block, Json::Value const& _json);
 };
 
 }

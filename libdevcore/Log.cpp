@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Log.cpp
  * @author Gav Wood <i@gavwood.com>
@@ -68,21 +68,21 @@ LogOverrideAux::~LogOverrideAux()
 }
 
 #if defined(_WIN32)
-const char* LogChannel::name() { return EthGray "..."; }
-const char* LeftChannel::name() { return EthNavy "<--"; }
-const char* RightChannel::name() { return EthGreen "-->"; }
-const char* WarnChannel::name() { return EthOnRed EthBlackBold "  X"; }
-const char* NoteChannel::name() { return EthBlue "  i"; }
-const char* DebugChannel::name() { return EthWhite "  D"; }
-const char* TraceChannel::name() { return EthGray "..."; }
+const char* LogChannel::name() { return VapGray "..."; }
+const char* LeftChannel::name() { return VapNavy "<--"; }
+const char* RightChannel::name() { return VapGreen "-->"; }
+const char* WarnChannel::name() { return VapOnRed VapBlackBold "  X"; }
+const char* NoteChannel::name() { return VapBlue "  i"; }
+const char* DebugChannel::name() { return VapWhite "  D"; }
+const char* TraceChannel::name() { return VapGray "..."; }
 #else
-const char* LogChannel::name() { return EthGray "···"; }
-const char* LeftChannel::name() { return EthNavy "◀▬▬"; }
-const char* RightChannel::name() { return EthGreen "▬▬▶"; }
-const char* WarnChannel::name() { return EthOnRed EthBlackBold "  ✘"; }
-const char* NoteChannel::name() { return EthBlue "  ℹ"; }
-const char* DebugChannel::name() { return EthWhite "  ◇"; }
-const char* TraceChannel::name() { return EthGray "..."; }
+const char* LogChannel::name() { return VapGray "···"; }
+const char* LeftChannel::name() { return VapNavy "◀▬▬"; }
+const char* RightChannel::name() { return VapGreen "▬▬▶"; }
+const char* WarnChannel::name() { return VapOnRed VapBlackBold "  ✘"; }
+const char* NoteChannel::name() { return VapBlue "  ℹ"; }
+const char* DebugChannel::name() { return VapWhite "  ◇"; }
+const char* TraceChannel::name() { return VapGray "..."; }
 #endif
 
 LogOutputStreamBase::LogOutputStreamBase(char const* _id, std::type_info const* _info, unsigned _v, bool _autospacing):
@@ -98,10 +98,10 @@ LogOutputStreamBase::LogOutputStreamBase(char const* _id, std::type_info const* 
 		char buf[24];
 		if (strftime(buf, 24, "%X", localtime(&rawTime)) == 0)
 			buf[0] = '\0'; // empty if case strftime fails
-		static char const* c_begin = "  " EthViolet;
-		static char const* c_sep1 = EthReset EthBlack "|" EthNavy;
-		static char const* c_sep2 = EthReset EthBlack "|" EthTeal;
-		static char const* c_end = EthReset "  ";
+		static char const* c_begin = "  " VapViolet;
+		static char const* c_sep1 = VapReset VapBlack "|" VapNavy;
+		static char const* c_sep2 = VapReset VapBlack "|" VapTeal;
+		static char const* c_end = VapReset "  ";
 		m_sstr << _id << c_begin << buf << "." << setw(3) << setfill('0') << ms;
 		m_sstr << c_sep1 << getThreadName() << ThreadContext::join(c_sep2) << c_end;
 	}

@@ -1,18 +1,18 @@
 /*
-	This file is part of cpp-ethereum.
+	This file is part of cpp-vapory.
 
-	cpp-ethereum is free software: you can redistribute it and/or modify
+	cpp-vapory is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
-	cpp-ethereum is distributed in the hope that it will be useful,
+	cpp-vapory is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+	along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file Common.cpp
  * @author Gav Wood <i@gavwood.com>
@@ -29,7 +29,7 @@ using namespace dev;
 namespace dev
 {
 
-char const* Version = ETH_PROJECT_VERSION;
+char const* Version = VAP_PROJECT_VERSION;
 bytes const NullBytes;
 u256 const Invalid256 = ~(u256)0;
 std::string const EmptyString;
@@ -46,9 +46,9 @@ void InvariantChecker::checkInvariants(HasInvariants const* _this, char const* _
 struct TimerChannel: public LogChannel { static const char* name(); static const int verbosity = 0; };
 
 #if defined(_WIN32)
-const char* TimerChannel::name() { return EthRed " ! "; }
+const char* TimerChannel::name() { return VapRed " ! "; }
 #else
-const char* TimerChannel::name() { return EthRed " ⚡ "; }
+const char* TimerChannel::name() { return VapRed " ⚡ "; }
 #endif
 
 TimerHelper::~TimerHelper()

@@ -20,7 +20,7 @@ namespace dev
 namespace test
 {
 
-/* from https://github.com/ewasm/evm2wasm */
+/* from https://github.com/ewasm/vvm2wasm */
 string wast2wasm(string const& input, bool debug)
 {
     wasm::Module module;

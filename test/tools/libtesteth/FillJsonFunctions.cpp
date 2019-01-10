@@ -1,33 +1,33 @@
 /*
-    This file is part of cpp-ethereum.
+    This file is part of cpp-vapory.
 
-    cpp-ethereum is free software: you can redistribute it and/or modify
+    cpp-vapory is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    cpp-ethereum is distributed in the hope that it will be useful,
+    cpp-vapory is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with cpp-ethereum.  If not, see <http://www.gnu.org/licenses/>.
+    along with cpp-vapory.  If not, see <http://www.gnu.org/licenses/>.
 */
 /** @file
  * Helper functions to work with json::spirit and test files
  */
 #include <libdevcore/CommonData.h>
-#include <libethereum/Transaction.h>
+#include <libvapory/Transaction.h>
 
-#include <test/tools/libtesteth/ImportTest.h>
-#include <test/tools/libtesteth/Options.h>
-#include <test/tools/libtesteth/TestHelper.h>
-#include <test/tools/libtesteth/TestOutputHelper.h>
+#include <test/tools/libtestvap/ImportTest.h>
+#include <test/tools/libtestvap/Options.h>
+#include <test/tools/libtestvap/TestHelper.h>
+#include <test/tools/libtestvap/TestOutputHelper.h>
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::vap;
 using namespace dev::test;
 
 namespace dev
@@ -51,16 +51,16 @@ json_spirit::mObject fillJsonWithTransaction(Transaction const& _txn)
 }
 
 json_spirit::mObject fillJsonWithStateChange(
-    State const& _stateOrig, eth::State const& _statePost, eth::ChangeLog const& _changeLog)
+    State const& _stateOrig, vap::State const& _statePost, vap::ChangeLog const& _changeLog)
 {
     json_spirit::mObject oState;
     if (!_changeLog.size())
         return oState;
 
     // Sort the vector by address field
-    eth::ChangeLog changeLog = _changeLog;
+    vap::ChangeLog changeLog = _changeLog;
     std::sort(changeLog.begin(), changeLog.end(),
-        [](const eth::Change& lhs, const eth::Change& rhs) { return lhs.address < rhs.address; });
+        [](const vap::Change& lhs, const vap::Change& rhs) { return lhs.address < rhs.address; });
 
     std::ostringstream log;
     json_spirit::mObject o;
@@ -80,7 +80,7 @@ json_spirit::mObject fillJsonWithStateChange(
             string after;
             string before;
             json_spirit::mArray record;
-            eth::Change change = changeLog.at(i);
+            vap::Change change = changeLog.at(i);
             switch (change.kind)
             {
             case Change::Kind::Code:
@@ -164,7 +164,7 @@ json_spirit::mObject fillJsonWithStateChange(
             log << (*it).second.str();
     }
 
-    dev::LogOutputStream<eth::StateTrace, false>() << log.str();
+    dev::LogOutputStream<vap::StateTrace, false>() << log.str();
     return oState;
 }
 
@@ -174,7 +174,7 @@ json_spirit::mObject fillJsonWithState(State const& _state)
     return fillJsonWithState(_state, emptyMap);
 }
 
-json_spirit::mObject fillJsonWithState(State const& _state, eth::AccountMaskMap const& _map)
+json_spirit::mObject fillJsonWithState(State const& _state, vap::AccountMaskMap const& _map)
 {
     bool mapEmpty = (_map.size() == 0);
     json_spirit::mObject oState;

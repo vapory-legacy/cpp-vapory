@@ -1,32 +1,32 @@
-# cpp-ethereum - Ethereum C++ client
+# cpp-vapory - Vapory C++ client
 
-This repository contains [cpp-ethereum](http://cpp-ethereum.org), the [Ethereum](https://ethereum.org) C++ client.
+This repository contains [cpp-vapory](http://cpp-vapory.co), the [Vapory](https://vapory.co) C++ client.
 
-It is the third most popular of the Ethereum clients, behind [geth](https://github.com/ethereum/go-ethereum) (the [go](https://golang.org)
-client) and [Parity](https://github.com/ethcore/parity) (the [rust](https://www.rust-lang.org/) client).  The code is exceptionally
-[portable](http://cpp-ethereum.org/portability.html) and has been used successfully on a very broad range
+It is the third most popular of the Vapory clients, behind [gvap](https://github.com/vaporyco/go-vapory) (the [go](https://golang.org)
+client) and [Parity](https://github.com/vapcore/parity) (the [rust](https://www.rust-lang.org/) client).  The code is exceptionally
+[portable](http://cpp-vapory.co/portability.html) and has been used successfully on a very broad range
 of operating systems and hardware.
 
 
 ## Contact
 
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ethereum/cpp-ethereum)
-[![GitHub Issues](https://img.shields.io/github/issues-raw/badges/shields.svg)](https://github.com/ethereum/cpp-ethereum/issues)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/vapory/cpp-vapory)
+[![GitHub Issues](https://img.shields.io/github/issues-raw/badges/shields.svg)](https://github.com/vaporyco/cpp-vapory/issues)
 
-- Chat in [cpp-ethereum channel on Gitter](https://gitter.im/ethereum/cpp-ethereum).
+- Chat in [cpp-vapory channel on Gitter](https://gitter.im/vapory/cpp-vapory).
 - Report bugs, issues or feature requests using [GitHub issues](issues/new).
 
 
 ## Getting Started
 
-The Ethereum Documentation site hosts the **[cpp-ethereum homepage](http://cpp-ethereum.org)**, which
+The Vapory Documentation site hosts the **[cpp-vapory homepage](http://cpp-vapory.co)**, which
 has a Quick Start section.
 
 
 Operating system | Status
 ---------------- | ----------
-Ubuntu and macOS | [![TravisCI](https://img.shields.io/travis/ethereum/cpp-ethereum/develop.svg)](https://travis-ci.org/ethereum/cpp-ethereum)
-Windows          | [![AppVeyor](https://img.shields.io/appveyor/ci/ethereum/cpp-ethereum/develop.svg)](https://ci.appveyor.com/project/ethereum/cpp-ethereum)
+Ubuntu and macOS | [![TravisCI](https://img.shields.io/travis/vapory/cpp-vapory/develop.svg)](https://travis-ci.org/vapory/cpp-vapory)
+Windows          | [![AppVeyor](https://img.shields.io/appveyor/ci/vapory/cpp-vapory/develop.svg)](https://ci.appveyor.com/project/vapory/cpp-vapory)
 
 
 ## Building from source
@@ -36,8 +36,8 @@ Windows          | [![AppVeyor](https://img.shields.io/appveyor/ci/ethereum/cpp-
 Git and GitHub is used to maintain the source code. Clone the repository by:
 
 ```shell
-git clone --recursive https://github.com/ethereum/cpp-ethereum.git
-cd cpp-ethereum
+git clone --recursive https://github.com/vaporyco/cpp-vapory.git
+cd cpp-vapory
 ```
 
 The `--recursive` option is important. It orders git to clone additional 
@@ -57,7 +57,7 @@ distribution  of the latest version available on the
 The CMake package available in your operating system can also be installed
 and used if it meets the minimum version requirement.
 
-> **Alternative method**
+> **Alternative mvapod**
 >
 > The repository contains the
 [scripts/install_cmake.sh](scripts/install_cmake.sh) script that downloads 
@@ -111,7 +111,7 @@ cmake --build .        # Build all default targets.
 On **Windows** Visual Studio 2015 is required. You should generate Visual Studio 
 solution file (.sln) for 64-bit architecture by adding 
 `-G "Visual Studio 14 2015 Win64"` argument to the CMake configure command.
-After configuration is completed the `cpp-ethereum.sln` can be found in the
+After configuration is completed the `cpp-vapory.sln` can be found in the
 `build` directory.
 
 ```shell
@@ -120,19 +120,19 @@ cmake .. -G "Visual Studio 14 2015 Win64"
 
 ## Contributing
 
-[![Contributors](https://img.shields.io/github/contributors/ethereum/cpp-ethereum.svg)](https://github.com/ethereum/cpp-ethereum/graphs/contributors)
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ethereum/cpp-ethereum)
-[![up-for-grabs](https://img.shields.io/github/issues-raw/ethereum/cpp-ethereum/up-for-grabs.svg)](https://github.com/ethereum/cpp-ethereum/labels/up-for-grabs)
+[![Contributors](https://img.shields.io/github/contributors/vapory/cpp-vapory.svg)](https://github.com/vaporyco/cpp-vapory/graphs/contributors)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/vapory/cpp-vapory)
+[![up-for-grabs](https://img.shields.io/github/issues-raw/vapory/cpp-vapory/up-for-grabs.svg)](https://github.com/vaporyco/cpp-vapory/labels/up-for-grabs)
 
 The current codebase is the work of many, many hands, with nearly 100
-[individual contributors](https://github.com/ethereum/cpp-ethereum/graphs/contributors) over the course of its development.
+[individual contributors](https://github.com/vaporyco/cpp-vapory/graphs/contributors) over the course of its development.
 
 Our day-to-day development chat happens on the
-[cpp-ethereum](https://gitter.im/ethereum/cpp-ethereum) Gitter channel.
+[cpp-vapory](https://gitter.im/vapory/cpp-vapory) Gitter channel.
 
 All contributions are welcome! We try to keep a list of tasks that are suitable
 for newcomers under the tag 
-[up-for-grabs](https://github.com/ethereum/cpp-ethereum/labels/up-for-grabs).
+[up-for-grabs](https://github.com/vaporyco/cpp-vapory/labels/up-for-grabs).
 If you have any questions, please just ask.
 
 Please read [CONTRIBUTING](CONTRIBUTING.md) and [CODING_STYLE](CODING_STYLE.md) 
@@ -143,22 +143,22 @@ All development goes in develop branch.
 
 ## Mining
 
-This project is **not suitable for Ethereum mining**. The support for GPU mining 
-has been dropped some time ago including the ethminer tool. Use the ethminer tool from https://github.com/ethereum-mining/ethminer.
+This project is **not suitable for Vapory mining**. The support for GPU mining 
+has been dropped some time ago including the vapminer tool. Use the vapminer tool from https://github.com/vapory-mining/vapminer.
 
 ## Testing
 
-To run the tests, make sure you clone https://github.com/ethereum/tests and point the environment variable
-`ETHEREUM_TEST_PATH` to that path.
+To run the tests, make sure you clone https://github.com/vaporyco/tests and point the environment variable
+`VAPORY_TEST_PATH` to that path.
 
 ## Documentation
 
 - [Internal documentation for developers](doc/index.rst).
-- [Outdated documentation for end users](http://www.ethdocs.org/en/latest/ethereum-clients/cpp-ethereum/).
+- [Outdated documentation for end users](http://www.vapdocs.org/en/latest/vapory-clients/cpp-vapory/).
 
 
 ## License
 
-[![License](https://img.shields.io/github/license/ethereum/cpp-ethereum.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/vapory/cpp-vapory.svg)](LICENSE)
 
 All contributions are made under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.en.html). See [LICENSE](LICENSE).
