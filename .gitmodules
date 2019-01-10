@@ -1,10 +1,13 @@
-[submodule "evmjit"]
-	path = evmjit
-	url = https://github.com/ethereum/evmjit
-	branch = develop
+[submodule "vvmjit"]
+	path = vvmjit
+	url = https://github.com/vaporyco/vvmjit
+	branch = master
 [submodule "test/tests"]
 	path = test/jsontests
-	url = https://github.com/ethereum/tests.git
+	url = https://github.com/vaporyco/tests.git
+	branch = develop
 [submodule "hera"]
 	path = hera
-	url = https://github.com/ewasm/hera
+	url = https://github.com/vwasm/hera
+	branch = vwasm-evolve
+
