@@ -1,7 +1,7 @@
 [submodule "vvmjit"]
 	path = vvmjit
 	url = https://github.com/vaporyco/vvmjit
-	branch = master
+	branch = evolve
 [submodule "test/tests"]
 	path = test/jsontests
 	url = https://github.com/vaporyco/tests.git
